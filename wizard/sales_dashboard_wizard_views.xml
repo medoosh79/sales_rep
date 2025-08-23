@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sales Dashboard Wizard Form View -->
+    <record id="view_sales_dashboard_wizard_form" model="ir.ui.view">
+        <field name="name">sales.dashboard.wizard.form</field>
+        <field name="model">sales.dashboard.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Sales Dashboard Wizard">
+                <sheet>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="sales_rep_ids"/>
+                        <field name="report_type"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_report" type="object" string="Generate Report" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Sales Dashboard Wizard Action -->
+    <record id="action_sales_dashboard_wizard" model="ir.actions.act_window">
+        <field name="name">Sales Dashboard Wizard</field>
+        <field name="res_model">sales.dashboard.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_sales_dashboard_wizard_form"/>
+    </record>
+</odoo>

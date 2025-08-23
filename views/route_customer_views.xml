@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Route Customer Tree View -->
+    <record id="view_route_customer_tree" model="ir.ui.view">
+        <field name="name">route.customer.tree</field>
+        <field name="model">route.customer</field>
+        <field name="arch" type="xml">
+            <tree string="Route Customers">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="customer_id"/>
+                <field name="visit_type"/>
+                <field name="priority"/>
+                <field name="visit_status"/>
+                <field name="expected_duration"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Route Customer Form View -->
+    <record id="view_route_customer_form" model="ir.ui.view">
+        <field name="name">route.customer.form</field>
+        <field name="model">route.customer</field>
+        <field name="arch" type="xml">
+            <form string="Route Customer">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="customer_id"/>
+                            <field name="visit_type"/>
+                            <field name="priority"/>
+                        </group>
+                        <group>
+                            <field name="visit_status"/>
+                            <field name="expected_duration"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Route Customer Action -->
+    <record id="action_route_customer" model="ir.actions.act_window">
+        <field name="name">Route Customers</field>
+        <field name="res_model">route.customer</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Route Customer Menu -->
+    <menuitem id="menu_route_customer"
+              name="Route Customers"
+              parent="menu_sales_rep_mgmt_pro"
+              action="action_route_customer"
+              sequence="30"/>
+</odoo>

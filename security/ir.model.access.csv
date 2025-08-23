@@ -15,4 +15,8 @@ access_territory_assignment_user,territory.assignment.user,model_territory_assig
 access_territory_assignment_manager,territory.assignment.manager,model_territory_assignment,sales_rep_mgmt_pro.group_sales_rep_manager,1,1,1,1
 
 access_sales_dashboard_wizard,access_sales_dashboard_wizard,model_sales_dashboard_wizard,base.group_user,1,1,1,1
-access_sales_dashboard,access_sales_dashboard,model_sales_dashboard,base.group_user,1,0,0,0
+access_sales_dashboard,access_sales_dashboard,model_sales_dashboard,base.group_user,1,1,1,1
+access_dynamic_route,access_dynamic_route,model_dynamic_route,base.group_user,1,1,1,1
+access_dynamic_route_point,access_dynamic_route_point,model_dynamic_route_point,base.group_user,1,1,1,1
+access_route_customer,access_route_customer,model_route_customer,base.group_user,1,1,1,1
+access_route_customer_wizard,access_route_customer_wizard,model_route_customer_wizard,base.group_user,1,1,1,1

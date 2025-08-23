@@ -205,7 +205,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <h6>Revenue Variance</h6>
-                                            <h4 t-attf-class="#{record.revenue_variance.raw_value >= 0 ? 'text-success' : 'text-danger'}">
+                                            <h4 class="text-info">
                                                 <field name="revenue_variance" widget="monetary"/>
                                             </h4>
                                         </div>
@@ -257,6 +257,6 @@
     <!-- Menu Items -->
     <menuitem id="menu_sales_dashboard" name="Dashboard" 
               parent="menu_sales_rep_root" 
-              action="action_sales_dashboard_wizard" 
+              action="action_sales_dashboard" 
               sequence="5"/>
 </odoo>

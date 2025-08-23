@@ -23,6 +23,9 @@
 
 
         'views/dashboard_views.xml',
+        # 'views/dynamic_route_views.xml',
+        # 'views/route_customer_views.xml',
+        'wizard/sales_dashboard_wizard_views.xml',
     ],
 
     'images': ['static/description/icon.svg'],
