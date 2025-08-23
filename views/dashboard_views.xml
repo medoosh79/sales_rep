@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sales Dashboard Wizard Form -->
+    <record id="view_sales_dashboard_wizard_form" model="ir.ui.view">
+        <field name="name">sales.dashboard.wizard.form</field>
+        <field name="model">sales.dashboard.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Sales Dashboard Report">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="report_type" widget="radio" options="{'horizontal': true}"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Date Range">
+                            <field name="date_range" widget="radio"/>
+                            <field name="date_from" invisible="date_range != 'custom'"/>
+                            <field name="date_to" invisible="date_range != 'custom'"/>
+                        </group>
+                        
+                        <group string="Report Options">
+                            <field name="group_by"/>
+                            <field name="visit_states"/>
+                            <field name="include_charts"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Filters" name="filters">
+                            <group>
+                                <group string="Sales Representatives">
+                                    <field name="sales_rep_ids" nolabel="1" widget="many2many_tags"/>
+                                </group>
+                                
+
+                            </group>
+                            
+                            <group>
+                                <group string="Customers">
+                                    <field name="customer_ids" nolabel="1" widget="many2many_tags"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                
+                <footer>
+                    <button string="Generate Report" name="action_generate_report" type="object" class="btn-primary"/>
+                    <button string="Open Dashboard" name="action_open_dashboard" type="object" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Sales Dashboard Form -->
+    <record id="view_sales_dashboard_form" model="ir.ui.view">
+        <field name="name">sales.dashboard.form</field>
+        <field name="model">sales.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Sales Representative Dashboard" create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    
+                    <!-- KPI Cards -->
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card bg-primary text-white mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h4 class="card-title"><field name="total_visits"/></h4>
+                                            <p class="card-text">Total Visits</p>
+                                        </div>
+                                        <div class="align-self-center">
+                                            <i class="fa fa-calendar fa-2x"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card bg-success text-white mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h4 class="card-title"><field name="completed_visits"/></h4>
+                                            <p class="card-text">Completed Visits</p>
+                                        </div>
+                                        <div class="align-self-center">
+                                            <i class="fa fa-check-circle fa-2x"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card bg-warning text-white mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h4 class="card-title"><field name="pending_visits"/></h4>
+                                            <p class="card-text">Pending Visits</p>
+                                        </div>
+                                        <div class="align-self-center">
+                                            <i class="fa fa-clock-o fa-2x"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card bg-danger text-white mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h4 class="card-title"><field name="cancelled_visits"/></h4>
+                                            <p class="card-text">Cancelled Visits</p>
+                                        </div>
+                                        <div class="align-self-center">
+                                            <i class="fa fa-times-circle fa-2x"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Performance Metrics -->
+                    <div class="row mt-4">
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Completion Rate</h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="progress mb-3" style="height: 20px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                            <field name="completion_rate" widget="percentage"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Success Rate</h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="progress mb-3" style="height: 20px;">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                            <field name="success_rate" widget="percentage"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">On Time Rate</h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="progress mb-3" style="height: 20px;">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                            <field name="on_time_rate" widget="percentage"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Revenue Information -->
+                    <div class="row mt-4">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Revenue Overview</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h6>Expected Revenue</h6>
+                                            <h4 class="text-muted"><field name="expected_revenue" widget="monetary"/></h4>
+                                        </div>
+                                        <div class="col-6">
+                                            <h6>Actual Revenue</h6>
+                                            <h4 class="text-success"><field name="total_revenue" widget="monetary"/></h4>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h6>Revenue Variance</h6>
+                                            <h4 t-attf-class="#{record.revenue_variance.raw_value >= 0 ? 'text-success' : 'text-danger'}">
+                                                <field name="revenue_variance" widget="monetary"/>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Customer Overview</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <h3 class="text-info"><field name="total_customers"/></h3>
+                                            <p class="mb-0">Total Customers</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <field name="currency_id" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_sales_dashboard_wizard" model="ir.actions.act_window">
+        <field name="name">Sales Dashboard</field>
+        <field name="res_model">sales.dashboard.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_sales_dashboard_wizard_form"/>
+    </record>
+
+    <record id="action_sales_dashboard" model="ir.actions.act_window">
+        <field name="name">Sales Dashboard</field>
+        <field name="res_model">sales.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_sales_dashboard_form"/>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_sales_dashboard" name="Dashboard" 
+              parent="menu_sales_rep_root" 
+              action="action_sales_dashboard_wizard" 
+              sequence="5"/>
+</odoo>

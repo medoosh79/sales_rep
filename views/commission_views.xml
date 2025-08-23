@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Commission Scheme Form View -->
+    <record id="view_commission_scheme_form" model="ir.ui.view">
+        <field name="name">commission.scheme.form</field>
+        <field name="model">commission.scheme</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_rules" type="object" class="oe_stat_button" icon="fa-list">
+                            <field name="rule_count" widget="statinfo" string="Rules"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" placeholder="Name"/></h1>
+                        <label for="code" class="oe_edit_only"/>
+                        <h2><field name="code" placeholder="Code"/></h2>
+                    </div>
+                    <group>
+                        <field name="active" widget="boolean_toggle"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="currency_id" invisible="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Describe the commission scheme..."/>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Commission Scheme Tree View -->
+    <record id="view_commission_scheme_tree" model="ir.ui.view">
+        <field name="name">commission.scheme.tree</field>
+        <field name="model">commission.scheme</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="rule_count"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Commission Scheme Search View -->
+    <record id="view_commission_scheme_search" model="ir.ui.view">
+        <field name="name">commission.scheme.search</field>
+        <field name="model">commission.scheme</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Commission Scheme" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Company" name="company" domain="[]" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Commission Rule Form View -->
+    <record id="view_commission_rule_form" model="ir.ui.view">
+        <field name="name">commission.rule.form</field>
+        <field name="model">commission.rule</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sequence"/>
+                            <field name="scheme_id"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                        <group>
+                            <field name="rule_type"/>
+                            <field name="fixed_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="percentage"/>
+                            <field name="apply_on"/>
+                        </group>
+                    </group>
+                    <group string="Amount Range">
+                        <field name="min_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="max_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="company_id" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Commission Scheme Action Window -->
+    <record id="action_commission_scheme" model="ir.actions.act_window">
+        <field name="name">Commission Schemes</field>
+        <field name="res_model">commission.scheme</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_commission_scheme_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first commission scheme
+            </p>
+            <p>
+                Define commission schemes with rules for calculating sales representative commissions.
+            </p>
+        </field>
+    </record>
+
+    <!-- Commission Scheme Menu -->
+    <menuitem id="menu_commission_scheme" name="Commission Schemes" 
+              parent="menu_sales_rep_root" 
+              action="action_commission_scheme" 
+              sequence="30"/>
+</odoo>

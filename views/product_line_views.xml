@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Product Line Form View -->
+    <record id="view_product_line_form" model="ir.ui.view">
+        <field name="name">product.line.form</field>
+        <field name="model">product.line</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_products" type="object" class="oe_stat_button" icon="fa-cube">
+                            <field name="product_count" widget="statinfo" string="Products"/>
+                        </button>
+                        <button name="action_view_territory_assignments" type="object" class="oe_stat_button" icon="fa-map">
+                            <field name="territory_assignment_count" widget="statinfo" string="Assignments"/>
+                        </button>
+                        <button name="action_view_geo_areas" type="object" class="oe_stat_button" icon="fa-map-marker">
+                            <field name="unique_geo_areas_count" widget="statinfo" string="Areas"/>
+                        </button>
+                        <button name="action_view_sales_reps" type="object" class="oe_stat_button" icon="fa-users">
+                            <field name="unique_sales_reps_count" widget="statinfo" string="Sales Reps"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Product Line Name..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="description" nolabel="1" placeholder="Description of the product line..."/>
+                    </group>
+                    <notebook>
+                        <page string="Products" name="products">
+                            <field name="product_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="default_code"/>
+                                    <field name="categ_id"/>
+                                    <field name="list_price" widget="monetary"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Territory Assignments" name="territory_assignments">
+                            <field name="territory_assignment_ids">
+                                <list editable="bottom">
+                                    <field name="geo_node_id"/>
+                                    <field name="sales_rep_id"/>
+                                    <field name="coverage_type"/>
+                                    <field name="priority" widget="priority"/>
+                                    <field name="commission_rate" widget="percentage"/>
+                                    <field name="date_start"/>
+                                    <field name="date_end"/>
+                                    <field name="active" widget="boolean_toggle"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Product Line List View -->
+    <record id="view_product_line_list" model="ir.ui.view">
+        <field name="name">product.line.list</field>
+        <field name="model">product.line</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="product_count"/>
+                <field name="territory_assignment_count"/>
+                <field name="unique_geo_areas_count"/>
+                <field name="unique_sales_reps_count"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Product Line Search View -->
+    <record id="view_product_line_search" model="ir.ui.view">
+        <field name="name">product.line.search</field>
+        <field name="model">product.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Product Line" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                <field name="code"/>
+                <field name="product_ids"/>
+                <separator/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="Has Products" name="has_products" domain="[('product_count', '>', 0)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Company" name="company" domain="[]" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Product Line Action Window -->
+    <record id="action_product_line" model="ir.actions.act_window">
+        <field name="name">Product Lines</field>
+        <field name="res_model">product.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first product line!
+            </p>
+            <p>
+                Product lines help you organize products by geographic areas and assign them to sales representatives.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_product_line"
+              name="Product Lines"
+              parent="menu_sales_rep_root"
+              action="action_product_line"
+              sequence="15"/>
+
+</odoo>
