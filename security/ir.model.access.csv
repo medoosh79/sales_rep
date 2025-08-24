@@ -20,3 +20,7 @@ access_dynamic_route,access_dynamic_route,model_dynamic_route,base.group_user,1,
 access_dynamic_route_point,access_dynamic_route_point,model_dynamic_route_point,base.group_user,1,1,1,1
 access_route_customer,access_route_customer,model_route_customer,base.group_user,1,1,1,1
 access_route_customer_wizard,access_route_customer_wizard,model_route_customer_wizard,base.group_user,1,1,1,1
+access_daily_visit_schedule,access_daily_visit_schedule,model_daily_visit_schedule,base.group_user,1,1,1,1
+access_daily_visit_line,access_daily_visit_line,model_daily_visit_line,base.group_user,1,1,1,1
+access_daily_visit_report,access_daily_visit_report,model_daily_visit_report,base.group_user,1,0,0,0
+access_daily_visit_analytics,access_daily_visit_analytics,model_daily_visit_analytics,base.group_user,1,0,0,0

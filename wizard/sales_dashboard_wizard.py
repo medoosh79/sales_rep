@@ -176,7 +176,7 @@ class SalesDashboardWizard(models.TransientModel):
             'name': _('Sales Dashboard - Summary Report'),
             'type': 'ir.actions.act_window',
             'res_model': 'visit.report',
-            'view_mode': 'pivot,graph,tree',
+            'view_mode': 'pivot,graph,list',
             'domain': domain,
             'context': context,
             'target': 'current'
@@ -195,7 +195,7 @@ class SalesDashboardWizard(models.TransientModel):
             'name': _('Sales Dashboard - Detailed Report'),
             'type': 'ir.actions.act_window',
             'res_model': 'visit.report',
-            'view_mode': 'tree,pivot,graph',
+            'view_mode': 'list,pivot,graph',
             'domain': domain,
             'context': context,
             'target': 'current'
@@ -215,7 +215,7 @@ class SalesDashboardWizard(models.TransientModel):
             'name': _('Sales Dashboard - Comparison Report'),
             'type': 'ir.actions.act_window',
             'res_model': 'route.report',
-            'view_mode': 'tree,pivot,graph',
+            'view_mode': 'list,pivot,graph',
             'context': context,
             'target': 'current'
         }

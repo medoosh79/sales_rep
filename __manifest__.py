@@ -23,10 +23,27 @@
 
 
         'views/dashboard_views.xml',
-        # 'views/dynamic_route_views.xml',
-        # 'views/route_customer_views.xml',
+        'views/dynamic_route_views.xml',
+        'views/route_customer_views.xml',
         'wizard/sales_dashboard_wizard_views.xml',
+        'views/daily_visit_schedule_views.xml',
+        'views/daily_visit_tracker_views.xml',
+        'views/daily_visit_report_views.xml',
+        'wizard/daily_visit_schedule_wizard_views.xml',
+        'views/visit_analytics_dashboard_views.xml',
+
     ],
+    'assets': {
+        'web.assets_backend': [
+            'sales_rep_mgmt_pro/static/src/css/daily_visit_tracker.css',
+            'sales_rep_mgmt_pro/static/src/js/daily_visit_tracker.js',
+            'sales_rep_mgmt_pro/static/src/xml/daily_visit_tracker.xml',
+            'sales_rep_mgmt_pro/static/src/js/visit_analytics_dashboard.js',
+            'sales_rep_mgmt_pro/static/src/xml/visit_analytics_dashboard.xml',
+            'sales_rep_mgmt_pro/static/src/css/visit_analytics_dashboard.css',
+
+        ],
+    },
 
     'images': ['static/description/icon.svg'],
     'installable': True,

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    
+    <!-- Visit Analytics Dashboard Template -->
+    <t t-name="sales_rep_mgmt_pro.VisitAnalyticsDashboard" owl="1">
+        <div class="visit-analytics-dashboard">
+            <!-- Header -->
+            <div class="dashboard-header mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="mb-0">
+                        <i class="fa fa-chart-line text-primary me-2"></i>
+                        Visit Performance Analytics
+                    </h2>
+                    <button class="btn btn-outline-primary" t-on-click="refreshData">
+                        <i class="fa fa-refresh"></i> Refresh
+                    </button>
+                </div>
+                
+                <!-- Filters -->
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Period Type</label>
+                        <select class="form-select" t-model="state.periodType" t-on-change="onPeriodTypeChange">
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="quarterly">Quarterly</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Date From</label>
+                        <input type="date" class="form-control" t-model="state.dateFrom" t-on-change="onDateFromChange"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Date To</label>
+                        <input type="date" class="form-control" t-model="state.dateTo" t-on-change="onDateToChange"/>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Loading State -->
+            <div t-if="state.loading" class="text-center py-5">
+                <i class="fa fa-spinner fa-spin fa-3x text-muted"></i>
+                <p class="text-muted mt-3">Loading analytics data...</p>
+            </div>
+            
+            <!-- Dashboard Content -->
+            <div t-if="!state.loading">
+                <!-- KPI Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="card kpi-card bg-primary text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h3 class="mb-0" t-esc="state.kpis.totalVisits"/>
+                                        <p class="mb-0">Total Visits</p>
+                                    </div>
+                                    <i class="fa fa-calendar-check fa-2x opacity-75"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 mb-3">
+                        <div class="card kpi-card bg-success text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h3 class="mb-0" t-esc="formatPercentage(state.kpis.avgCompletionRate)"/>
+                                        <p class="mb-0">Avg Completion Rate</p>
+                                    </div>
+                                    <i class="fa fa-check-circle fa-2x opacity-75"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 mb-3">
+                        <div class="card kpi-card bg-info text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h3 class="mb-0" t-esc="formatCurrency(state.kpis.totalRevenue)"/>
+                                        <p class="mb-0">Total Revenue</p>
+                                    </div>
+                                    <i class="fa fa-dollar-sign fa-2x opacity-75"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 mb-3">
+                        <div class="card kpi-card bg-warning text-white">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h3 class="mb-0" t-esc="formatPercentage(state.kpis.avgRevenueAchievement)"/>
+                                        <p class="mb-0">Revenue Achievement</p>
+                                    </div>
+                                    <i class="fa fa-target fa-2x opacity-75"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Row -->
+                <div class="row mb-4">
+                    <!-- Completion Trend Chart -->
+                    <div class="col-md-8 mb-3">
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-line-chart text-primary me-2"></i>
+                                    Visit Completion Trend
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="completionTrendChart" height="300"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Visit Distribution Chart -->
+                    <div class="col-md-4 mb-3">
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-pie-chart text-success me-2"></i>
+                                    Visit Distribution
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="visitDistributionChart" height="300"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Revenue Trend Chart -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-bar-chart text-info me-2"></i>
+                                    Revenue Trend
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="revenueTrendChart" height="300"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Analytics Table -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-table text-secondary me-2"></i>
+                                    Detailed Analytics
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Period</th>
+                                                <th>Total Visits</th>
+                                                <th>Completed</th>
+                                                <th>Completion Rate</th>
+                                                <th>Revenue</th>
+                                                <th>Distance (KM)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="state.analytics" t-as="item" t-key="item.period">
+                                                <tr>
+                                                    <td><strong t-esc="item.period"/></td>
+                                                    <td>
+                                                        <span class="badge bg-primary" t-esc="item.total_visits"/>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-success" t-esc="item.completed_visits"/>
+                                                    </td>
+                                                    <td>
+                                                        <div class="progress" style="height: 20px;">
+                                                            <div class="progress-bar" 
+                                                                 t-attf-style="width: {{item.completion_rate}}%"
+                                                                 t-esc="formatPercentage(item.completion_rate)"/>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-success fw-bold" t-esc="formatCurrency(item.total_revenue)"/>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-muted" t-esc="item.total_distance"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Empty State -->
+            <div t-if="!state.loading and state.analytics.length === 0" class="text-center py-5">
+                <div class="text-muted">
+                    <i class="fa fa-chart-line fa-3x mb-3"></i>
+                    <h5>No analytics data available</h5>
+                    <p>Complete some daily visit schedules to see analytics here.</p>
+                </div>
+            </div>
+        </div>
+    </t>
+    
+</templates>

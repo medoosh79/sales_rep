@@ -31,7 +31,7 @@ class CommissionScheme(models.Model):
             'name': _('Commission Rules'),
             'type': 'ir.actions.act_window',
             'res_model': 'commission.rule',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('scheme_id', '=', self.id)],
             'context': {'default_scheme_id': self.id},
         }

@@ -10,3 +10,6 @@ from . import geo_node
 from . import sales_dashboard_wizard
 from . import dynamic_route
 from . import route_customer
+from . import daily_visit_schedule
+from . import daily_visit_report
+from . import daily_visit_schedule_wizard

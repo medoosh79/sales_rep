@@ -1,46 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Dynamic Route Tree View -->
-    <record id="view_dynamic_route_tree" model="ir.ui.view">
-        <field name="name">dynamic.route.tree</field>
-        <field name="model">dynamic.route</field>
-        <field name="arch" type="xml">
-            <tree string="Dynamic Routes">
-                <field name="route_name"/>
-                <field name="state"/>
-                <field name="start_date"/>
-            </tree>
-        </field>
-    </record>
+    <data>
+        <!-- Dynamic Route Tree View -->
+        <record id="view_dynamic_route_tree" model="ir.ui.view">
+            <field name="name">dynamic.route.tree</field>
+            <field name="model">dynamic.route</field>
+            <field name="arch" type="xml">
+                <list string="Dynamic Routes">
+                    <field name="route_name"/>
+                    <field name="state"/>
+                    <field name="start_date"/>
+                </list>
+            </field>
+        </record>
 
-    <!-- Dynamic Route Form View -->
-    <record id="view_dynamic_route_form" model="ir.ui.view">
-        <field name="name">dynamic.route.form</field>
-        <field name="model">dynamic.route</field>
-        <field name="arch" type="xml">
-            <form string="Dynamic Route">
-                <sheet>
-                    <div class="oe_title">
-                        <h1>
-                            <field name="route_name" placeholder="Route Name..."/>
-                        </h1>
-                    </div>
-                    <group>
-                        <field name="state"/>
-                        <field name="start_date"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
+        <!-- Dynamic Route Form View -->
+        <record id="view_dynamic_route_form" model="ir.ui.view">
+            <field name="name">dynamic.route.form</field>
+            <field name="model">dynamic.route</field>
+            <field name="arch" type="xml">
+                <form string="Dynamic Route">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="route_name" placeholder="Route Name..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="state"/>
+                            <field name="start_date"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-    <!-- Dynamic Route Action -->
-    <record id="action_dynamic_route" model="ir.actions.act_window">
-        <field name="name">Dynamic Routes</field>
-        <field name="res_model">dynamic.route</field>
-        <field name="view_mode">tree,form</field>
-    </record>
+        <!-- Dynamic Route Action -->
+        <record id="action_dynamic_route" model="ir.actions.act_window">
+            <field name="name">Dynamic Routes</field>
+            <field name="res_model">dynamic.route</field>
+            <field name="view_mode">list,form</field>
+        </record>
 
-    <!-- Menu Item -->
-    <menuitem id="menu_dynamic_route" name="Dynamic Routes" parent="menu_sales_rep_mgmt_root" action="action_dynamic_route" sequence="30"/>
+        <!-- Menu Item -->
+        <menuitem id="menu_dynamic_route" name="Dynamic Routes" parent="menu_sales_rep_root" action="action_dynamic_route" sequence="30"/>
+    </data>
 </odoo>

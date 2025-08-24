@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Daily Visit Schedule Wizard Form View -->
+    <record id="view_daily_visit_schedule_wizard_form" model="ir.ui.view">
+        <field name="name">daily.visit.schedule.wizard.form</field>
+        <field name="model">daily.visit.schedule.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Daily Visit Schedule">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Schedule Name..."/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group name="basic_info">
+                            <field name="sales_rep_id" options="{'no_create': True}"/>
+                            <field name="visit_date"/>
+                            <field name="start_time" widget="float_time"/>
+                            <field name="end_time" widget="float_time"/>
+                        </group>
+                        <group name="template_options">
+                            <field name="use_template"/>
+                            <field name="template_type" invisible="use_template == False"/>
+                            <field name="auto_schedule"/>
+                            <field name="visit_duration" widget="float_time" invisible="auto_schedule == False"/>
+                            <field name="travel_time" widget="float_time" invisible="auto_schedule == False"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Template-specific options -->
+                    <group invisible="use_template == False">
+                        <!-- Route-based template -->
+                        <group name="route_options" invisible="template_type != 'route_based'">
+                            <field name="route_id" options="{'no_create': True}"/>
+                            <field name="include_all_customers"/>
+                        </group>
+                        
+                        <!-- Customer-based template -->
+                        <group name="customer_options" invisible="template_type != 'customer_based'">
+                            <field name="customer_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                        </group>
+                        
+                        <!-- Previous schedule template -->
+                        <group name="previous_schedule_options" invisible="template_type != 'previous_schedule'">
+                            <field name="previous_schedule_id" options="{'no_create': True}" domain="[('sales_rep_id', '=', sales_rep_id)]"/>
+                            <field name="copy_notes"/>
+                            <field name="copy_timing"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Visit Lines -->
+                    <notebook>
+                        <page string="Visit Lines" name="visit_lines">
+                            <field name="visit_line_ids">
+                                <list string="Visit Lines" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="customer_id" options="{'no_create': True}"/>
+                                    <field name="contact_person"/>
+                                    <field name="planned_time" widget="float_time"/>
+                                    <field name="planned_duration" widget="float_time"/>
+                                    <field name="visit_type"/>
+                                    <field name="expected_amount" widget="monetary"/>
+                                    <field name="travel_distance"/>
+                                    <field name="estimated_duration" widget="float_time"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </list>
+                                <form string="Visit Line">
+                                    <group>
+                                        <group name="customer_info">
+                                            <field name="customer_id" options="{'no_create': True}"/>
+                                            <field name="contact_person"/>
+                                            <field name="sequence"/>
+                                        </group>
+                                        <group name="visit_planning">
+                                            <field name="visit_type"/>
+                                            <field name="planned_time" widget="float_time"/>
+                                            <field name="planned_duration" widget="float_time"/>
+                                            <field name="expected_amount" widget="monetary"/>
+                                            <field name="currency_id" invisible="1"/>
+                                        </group>
+                                    </group>
+                                    
+                                    <group>
+                                        <group name="travel_info">
+                                            <field name="travel_distance"/>
+                                            <field name="estimated_duration" widget="float_time"/>
+                                        </group>
+                                    </group>
+                                    
+                                    <group>
+                                        <field name="visit_notes" placeholder="Visit notes..."/>
+                                        <field name="follow_up_notes" placeholder="Follow-up notes..."/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                
+                <footer>
+                    <button name="action_create_schedule" type="object" string="Create Schedule" class="btn-primary"/>
+                    <button name="action_preview_schedule" type="object" string="Preview" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Visit Reschedule Wizard Form View -->
+    <record id="view_visit_reschedule_wizard_form" model="ir.ui.view">
+        <field name="name">visit.reschedule.wizard.form</field>
+        <field name="model">visit.reschedule.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reschedule Visit">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Reschedule Visit</h1>
+                    </div>
+                    
+                    <group>
+                        <group name="current_info">
+                            <label for="customer_id" string="Customer"/>
+                            <field name="customer_id" readonly="1"/>
+                            <label for="current_date" string="Current Date"/>
+                            <field name="current_date" readonly="1"/>
+                            <label for="current_time" string="Current Time"/>
+                            <field name="current_time" widget="float_time" readonly="1"/>
+                        </group>
+                        
+                        <group name="new_info">
+                            <field name="new_date"/>
+                            <field name="new_time" widget="float_time"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <field name="reason" placeholder="Please provide a reason for rescheduling..."/>
+                    </group>
+                    
+                    <field name="visit_line_id" invisible="1"/>
+                </sheet>
+                
+                <footer>
+                    <button name="action_reschedule" type="object" string="Reschedule" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Daily Visit Schedule Wizard Action -->
+    <record id="action_daily_visit_schedule_wizard" model="ir.actions.act_window">
+        <field name="name">Create Daily Schedule</field>
+        <field name="res_model">daily.visit.schedule.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{
+            'default_sales_rep_id': uid,
+            'default_visit_date': context_today(),
+        }</field>
+    </record>
+
+    <!-- Visit Reschedule Wizard Action -->
+    <record id="action_visit_reschedule_wizard" model="ir.actions.act_window">
+        <field name="name">Reschedule Visit</field>
+        <field name="res_model">visit.reschedule.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Quick Actions Menu -->
+    <menuitem id="menu_daily_schedule_quick_actions"
+              name="Quick Actions"
+              parent="menu_sales_rep_root"
+              sequence="100"/>
+
+    <menuitem id="menu_create_daily_schedule"
+              name="Create Daily Schedule"
+              parent="menu_daily_schedule_quick_actions"
+              action="action_daily_visit_schedule_wizard"
+              sequence="10"/>
+
+</odoo>

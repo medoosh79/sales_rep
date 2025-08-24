@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Daily Visit Tracker Form View -->
+        <record id="view_daily_visit_tracker_form" model="ir.ui.view">
+            <field name="name">daily.visit.tracker.form</field>
+            <field name="model">daily.visit.schedule</field>
+            <field name="arch" type="xml">
+                <form string="Daily Visit Tracker">
+                    <header>
+                        <button name="action_confirm" string="Confirm Schedule" type="object" 
+                                class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="action_start" string="Start Day" type="object" 
+                                class="btn-success" invisible="state != 'confirmed'"/>
+                        <button name="action_complete" string="Complete Day" type="object" 
+                                class="btn-info" invisible="state != 'in_progress'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_progress,completed"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="display_name" readonly="1"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="sales_rep_id" readonly="1"/>
+                                <field name="visit_date" readonly="1"/>
+                                <field name="total_visits" readonly="1"/>
+                                <field name="completed_visits" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="progress" widget="progressbar" readonly="1"/>
+                                <field name="expected_revenue" readonly="1"/>
+                                <field name="actual_revenue" readonly="1"/>
+                                <field name="total_distance" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Real-time Visit Tracker Component -->
+                        <div class="mt-4">
+                            <div class="o_form_sheet_bg">
+                                <div class="daily-visit-tracker-container">
+                                    <!-- This will be populated by the JavaScript component -->
+                                    <div class="text-center py-4">
+                                        <i class="fa fa-spinner fa-spin fa-2x text-muted"></i>
+                                        <p class="text-muted mt-2">Loading visit tracker...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Visit Lines -->
+                        <notebook>
+                            <page string="Visit Details">
+                                <field name="visit_line_ids">
+                                    <list string="Visits" editable="bottom">
+                                        <field name="sequence"/>
+                                        <field name="customer_id"/>
+                                        <field name="planned_time" widget="float_time"/>
+                                        <field name="planned_duration"/>
+                                        <field name="visit_type"/>
+                                        <field name="state"/>
+                                        <field name="actual_start_time" widget="float_time"/>
+                                        <field name="actual_end_time" widget="float_time"/>
+                                        <field name="visit_result"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Statistics">
+                                <group>
+                                    <group string="Visit Statistics">
+                                        <field name="total_visits" readonly="1"/>
+                                        <field name="completed_visits" readonly="1"/>
+                                        <field name="progress" widget="progressbar" readonly="1"/>
+                                    </group>
+                                    <group string="Financial Statistics">
+                                        <field name="expected_revenue" readonly="1"/>
+                                        <field name="actual_revenue" readonly="1"/>
+                                        <field name="revenue_variance" readonly="1"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group string="Travel Statistics">
+                                        <field name="total_distance" readonly="1"/>
+                                        <field name="total_travel_time" readonly="1"/>
+                                        <field name="fuel_cost" readonly="1"/>
+                                    </group>
+                                    <group string="Time Statistics">
+                                        <field name="planned_start_time" widget="float_time" readonly="1"/>
+                                        <field name="planned_end_time" widget="float_time" readonly="1"/>
+                                        <field name="actual_start_time" widget="float_time" readonly="1"/>
+                                        <field name="actual_end_time" widget="float_time" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Daily Visit Tracker Action -->
+        <record id="action_daily_visit_tracker" model="ir.actions.act_window">
+            <field name="name">Daily Visit Tracker</field>
+            <field name="res_model">daily.visit.schedule</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_daily_visit_schedule_list"/>
+            <field name="context">{
+                'default_sales_rep_id': uid,
+                'default_visit_date': context_today().strftime('%Y-%m-%d')
+            }</field>
+            <field name="domain">[
+                ('sales_rep_id', '=', uid),
+                ('visit_date', '=', context_today().strftime('%Y-%m-%d'))
+            ]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Start tracking your daily visits!
+                </p>
+                <p>
+                    Create a daily visit schedule and track your visits in real-time.
+                    Monitor progress, update visit status, and track your location.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Menu Item for Daily Visit Tracker -->
+        <menuitem id="menu_daily_visit_tracker"
+                  name="Visit Tracker"
+                  parent="menu_sales_rep_root"
+                  action="action_daily_visit_tracker"
+                  sequence="25"/>
+                  
+    </data>
+</odoo>

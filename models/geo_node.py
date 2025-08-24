@@ -150,7 +150,7 @@ class GeoNode(models.Model):
             'name': _('Partners'),
             'type': 'ir.actions.act_window',
             'res_model': 'res.partner',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [],  # Will be updated in future phases
             'context': {},
         }

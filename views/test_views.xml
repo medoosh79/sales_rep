@@ -6,10 +6,10 @@
             <field name="name">test.partner.tree</field>
             <field name="model">res.partner</field>
             <field name="arch" type="xml">
-                <tree string="Test Partners">
+                <list string="Test Partners">
                     <field name="name"/>
                     <field name="email"/>
-                </tree>
+                </list>
             </field>
         </record>
     </data>

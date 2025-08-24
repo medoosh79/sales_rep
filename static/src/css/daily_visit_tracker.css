@@ -1,0 +1,186 @@
+.daily-visit-tracker {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    min-height: 500px;
+}
+
+.daily-visit-tracker .card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border-radius: 12px;
+}
+
+.daily-visit-tracker .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.daily-visit-tracker .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px 12px 0 0 !important;
+    border: none;
+    padding: 12px 16px;
+}
+
+.daily-visit-tracker .card-body {
+    padding: 16px;
+}
+
+.daily-visit-tracker .card-footer {
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    border-radius: 0 0 12px 12px;
+    padding: 12px 16px;
+}
+
+.daily-visit-tracker .btn-group .btn {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.daily-visit-tracker .btn-group .btn:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.daily-visit-tracker .btn-group .btn:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.daily-visit-tracker .badge {
+    font-size: 0.75em;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.daily-visit-tracker .alert {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.daily-visit-tracker .alert-warning {
+    background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+    color: #2d3436;
+}
+
+.daily-visit-tracker .bg-light {
+    background: white !important;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.daily-visit-tracker .text-muted {
+    color: #6c757d !important;
+}
+
+.daily-visit-tracker .fa {
+    margin-right: 4px;
+}
+
+.daily-visit-tracker .fa-3x {
+    margin-right: 0;
+}
+
+/* Status Colors */
+.bg-planned {
+    background-color: #17a2b8 !important;
+}
+
+.bg-in_progress {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.bg-completed {
+    background-color: #28a745 !important;
+}
+
+.bg-cancelled {
+    background-color: #dc3545 !important;
+}
+
+/* Visit Type Colors */
+.bg-sales {
+    background-color: #007bff !important;
+}
+
+.bg-follow_up {
+    background-color: #17a2b8 !important;
+}
+
+.bg-support {
+    background-color: #6c757d !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .daily-visit-tracker {
+        padding: 15px;
+    }
+    
+    .daily-visit-tracker .card {
+        margin-bottom: 15px;
+    }
+    
+    .daily-visit-tracker .btn-group {
+        flex-direction: column;
+    }
+    
+    .daily-visit-tracker .btn-group .btn {
+        border-radius: 6px !important;
+        margin-bottom: 5px;
+    }
+    
+    .daily-visit-tracker .btn-group .btn:last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* Animation for status updates */
+.daily-visit-tracker .card.updating {
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Loading state */
+.daily-visit-tracker .loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.daily-visit-tracker .loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

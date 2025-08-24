@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Visit Analytics Dashboard Form View -->
+        <record id="view_visit_analytics_dashboard_form" model="ir.ui.view">
+            <field name="name">visit.analytics.dashboard.form</field>
+            <field name="model">daily.visit.analytics</field>
+            <field name="arch" type="xml">
+                <form string="Visit Analytics Dashboard" create="false" edit="false" delete="false">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <i class="fa fa-chart-line text-primary me-2"></i>
+                                Visit Performance Analytics
+                            </h1>
+                        </div>
+                        
+                        <!-- Analytics Dashboard Component -->
+                        <div class="visit-analytics-container">
+                            <div id="visit_analytics_dashboard" class="o_field_widget"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Visit Analytics Dashboard Action -->
+        <record id="action_visit_analytics_dashboard" model="ir.actions.act_window">
+            <field name="name">Visit Analytics Dashboard</field>
+            <field name="res_model">daily.visit.analytics</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_visit_analytics_dashboard_form"/>
+            <field name="target">current</field>
+            <field name="context">{}</field>
+        </record>
+        
+        <!-- Enhanced Daily Visit Report Tree View with Analytics Button -->
+        <record id="view_daily_visit_report_tree_enhanced" model="ir.ui.view">
+            <field name="name">daily.visit.report.tree.enhanced</field>
+            <field name="model">daily.visit.report</field>
+            <field name="arch" type="xml">
+                <list string="Daily Visit Reports" create="false" edit="false" delete="false">
+                    <field name="sales_rep_name"/>
+                    <field name="date"/>
+                    <field name="total_visits"/>
+                    <field name="completed_visits"/>
+                    <field name="completion_rate" widget="percentage"/>
+                    <field name="total_revenue" widget="monetary"/>
+                    <field name="total_distance"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- Enhanced Daily Visit Report Form View with Analytics Integration -->
+        <record id="view_daily_visit_report_form_enhanced" model="ir.ui.view">
+            <field name="name">daily.visit.report.form.enhanced</field>
+            <field name="model">daily.visit.report</field>
+            <field name="inherit_id" ref="view_daily_visit_report_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">false</attribute>
+                    <attribute name="edit">false</attribute>
+                    <attribute name="delete">false</attribute>
+                </xpath>
+                
+                <xpath expr="//form" position="inside">
+                    <header>
+                        <button name="%(action_visit_analytics_dashboard)d" 
+                                string="View Analytics Dashboard" 
+                                type="action" 
+                                class="btn-primary"
+                                icon="fa-chart-line"/>
+                    </header>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Visit Performance Analytics Menu -->
+        <menuitem id="menu_visit_analytics_dashboard"
+                  name="Performance Analytics"
+                  parent="menu_daily_visit_reports"
+                  action="action_visit_analytics_dashboard"
+                  sequence="15"/>
+        
+        <!-- Enhanced Dashboard View with Analytics Integration -->
+        <record id="view_daily_visit_dashboard_enhanced" model="ir.ui.view">
+            <field name="name">daily.visit.dashboard.enhanced</field>
+            <field name="model">daily.visit.report</field>
+            <field name="inherit_id" ref="view_daily_visit_report_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="attributes">
+                    <attribute name="class">o_kanban_dashboard o_kanban_with_analytics</attribute>
+                </xpath>
+                <xpath expr="//templates" position="before">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="alert alert-info d-flex align-items-center" role="alert">
+                                <i class="fa fa-info-circle me-2"></i>
+                                <div class="flex-grow-1">
+                                    <strong>Enhanced Analytics Available!</strong>
+                                    Get detailed insights and interactive charts for your visit performance.
+                                </div>
+                                <button class="btn btn-outline-primary btn-sm ms-2" 
+                                        onclick="window.open('/web#action=%(action_visit_analytics_dashboard)d', '_blank')">
+                                    <i class="fa fa-chart-line me-1"></i>
+                                    Open Analytics
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Quick Analytics Widget for Daily Visit Schedule -->
+        <record id="view_daily_visit_schedule_form_analytics" model="ir.ui.view">
+            <field name="name">daily.visit.schedule.form.analytics</field>
+            <field name="model">daily.visit.schedule</field>
+            <field name="inherit_id" ref="view_daily_visit_schedule_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="%(action_visit_analytics_dashboard)d" 
+                            string="View Performance Analytics" 
+                            type="action" 
+                            class="btn-secondary"
+                            icon="fa-chart-bar"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Analytics Summary Widget -->
+        <record id="view_visit_analytics_summary_widget" model="ir.ui.view">
+            <field name="name">visit.analytics.summary.widget</field>
+            <field name="model">daily.visit.analytics</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_dashboard" create="false" edit="false" delete="false">
+                    <field name="period_type"/>
+                    <field name="period"/>
+                    <field name="total_visits"/>
+                    <field name="avg_completion_rate"/>
+                    <field name="total_revenue"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title">
+                                        <div class="o_primary">
+                                            <i class="fa fa-chart-line text-primary"></i>
+                                            Analytics Summary
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_card_content">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <button class="btn btn-primary btn-block" 
+                                                    name="%(action_visit_analytics_dashboard)d" 
+                                                    type="action">
+                                                <i class="fa fa-chart-line"></i>
+                                                View Dashboard
+                                            </button>
+                                        </div>
+                                        <div class="col-6">
+                                            <button class="btn btn-outline-secondary btn-block" 
+                                                    name="%(action_daily_visit_report)d" 
+                                                    type="action">
+                                                <i class="fa fa-table"></i>
+                                                View Reports
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <!-- Analytics Summary Action -->
+        <record id="action_visit_analytics_summary" model="ir.actions.act_window">
+            <field name="name">Visit Analytics Summary</field>
+            <field name="res_model">daily.visit.analytics</field>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="view_visit_analytics_summary_widget"/>
+            <field name="target">current</field>
+            <field name="context">{}</field>
+        </record>
+        
+    </data>
+</odoo>

@@ -194,7 +194,7 @@
     <!-- Territory Assignment Action Window -->
     <record id="action_territory_assignment" model="ir.actions.act_window">
         <field name="name">Territory Assignments</field>
-        <!-- <field name="res_model">territory.assignment</field> -->
+        <field name="res_model">territory.assignment</field>
         <field name="view_mode">kanban,list,form</field>
         <field name="search_view_id" ref="view_territory_assignment_search"/>
         <field name="help" type="html">

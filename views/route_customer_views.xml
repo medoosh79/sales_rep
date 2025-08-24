@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Route Customer Tree View -->
+    <data>
+        <!-- Route Customer Tree View -->
     <record id="view_route_customer_tree" model="ir.ui.view">
         <field name="name">route.customer.tree</field>
         <field name="model">route.customer</field>
         <field name="arch" type="xml">
-            <tree string="Route Customers">
+            <list string="Route Customers">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="customer_id"/>
@@ -13,7 +14,7 @@
                 <field name="priority"/>
                 <field name="visit_status"/>
                 <field name="expected_duration"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -46,13 +47,15 @@
     <record id="action_route_customer" model="ir.actions.act_window">
         <field name="name">Route Customers</field>
         <field name="res_model">route.customer</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <!-- Route Customer Menu -->
     <menuitem id="menu_route_customer"
               name="Route Customers"
-              parent="menu_sales_rep_mgmt_pro"
+              parent="menu_sales_rep_root"
               action="action_route_customer"
               sequence="30"/>
+
+</data>
 </odoo>
