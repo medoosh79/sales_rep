@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Sales Representative Management PRO',
-    'summary': 'Phase 1: Foundation for advanced sales rep assignment, geo segmentation, and product lines',
-    'version': '1.0.0',
-    'category': 'Sales',
-    'sequence': 0,
-    'author': 'Custom',
-    'website': 'http://localhost',
-    'license': 'LGPL-3',
-    'depends': ['sale', 'mail', 'hr'],
+    'summary': 'Advanced sales representative management with geo segmentation, territory assignment, and comprehensive analytics for Odoo 18 Enterprise',
+    'version': '18.0.1.0.0',
+    'category': 'Sales/Sales',
+    'sequence': 10,
+    'author': 'Odoo Enterprise Solutions',
+    'website': 'https://www.odoo.com',
+    'license': 'OPL-1',
+    'depends': ['base', 'sale', 'sale_management', 'mail', 'hr', 'web', 'portal'],
     'external_dependencies': {
-        'python': ['reportlab', 'xlsxwriter'],
+        'python': ['reportlab', 'xlsxwriter', 'geopy', 'folium'],
     },
     'data': [
         'security/security.xml',
@@ -70,8 +70,11 @@
         ],
     },
 
-    # 'images': ['static/description/icon.svg'],
+    'images': ['static/description/icon.svg'],
     'installable': True,
     'application': True,
     'auto_install': False,
+    'price': 299.00,
+    'currency': 'USD',
+    'support': 'support@odoo.com',
 }

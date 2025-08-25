@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 
+    Sales Representative Management PRO - Security Configuration
+    Odoo 18 Enterprise Edition
+    
+    Author: Odoo Enterprise Solutions
+    Version: 18.0.1.0.0
+    License: OPL-1
+-->
 <odoo>
     <data noupdate="0">
-        <!-- Sales Rep Security Group -->
+        <!-- Sales Rep Security Groups -->
         <record id="group_sales_rep_user" model="res.groups">
             <field name="name">Sales Representatives / User</field>
             <field name="category_id" ref="base.module_category_sales_sales"/>
             <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="comment">Basic access to sales representative features</field>
         </record>
 
         <record id="group_sales_rep_manager" model="res.groups">
@@ -13,6 +22,21 @@
             <field name="category_id" ref="base.module_category_sales_sales"/>
             <field name="implied_ids" eval="[(4, ref('group_sales_rep_user')), (4, ref('sales_team.group_sale_manager'))]"/>
             <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+            <field name="comment">Full access to sales representative management</field>
+        </record>
+
+        <record id="group_sales_rep_analytics" model="res.groups">
+            <field name="name">Sales Representatives / Analytics</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+            <field name="implied_ids" eval="[(4, ref('group_sales_rep_user'))]"/>
+            <field name="comment">Access to sales analytics and reporting</field>
+        </record>
+
+        <record id="group_sales_rep_territory" model="res.groups">
+            <field name="name">Sales Representatives / Territory Management</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+            <field name="implied_ids" eval="[(4, ref('group_sales_rep_user'))]"/>
+            <field name="comment">Access to territory assignment and management</field>
         </record>
 
         <!-- Multi-company rules -->

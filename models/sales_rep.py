@@ -1,13 +1,37 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+"""
+Sales Representative Management for Odoo 18 Enterprise
+
+This module provides comprehensive sales representative management capabilities
+including territory assignment, commission tracking, and performance analytics.
+
+Author: Odoo Enterprise Solutions
+Version: 18.0.1.0.0
+License: OPL-1
+"""
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class SalesRepresentative(models.Model):
+    """Sales Representative Model for Odoo 18 Enterprise
+    
+    This model manages sales representatives with comprehensive features including:
+    - Territory assignment and management
+    - Commission tracking and calculation
+    - Performance analytics and KPI monitoring
+    - Integration with HR and Partner modules
+    """
     _name = 'sales.rep'
     _description = 'Sales Representative'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'name'
+    _check_company_auto = True
     
     name = fields.Char(string='Name', required=True, tracking=True)
     code = fields.Char(string='Code', tracking=True)

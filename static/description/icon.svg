@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5A623;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E8931E;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#grad1)" stroke="#2C5282" stroke-width="2"/>
+  
+  <!-- Sales Representative Icon -->
+  <g transform="translate(32, 25)">
+    <!-- Person Head -->
+    <circle cx="32" cy="20" r="12" fill="white" opacity="0.9"/>
+    
+    <!-- Person Body -->
+    <path d="M20 35 Q20 32 23 32 L41 32 Q44 32 44 35 L44 50 Q44 53 41 53 L23 53 Q20 53 20 50 Z" fill="white" opacity="0.9"/>
+    
+    <!-- Briefcase -->
+    <rect x="48" y="40" width="16" height="12" rx="2" fill="url(#grad2)"/>
+    <rect x="50" y="38" width="12" height="3" rx="1" fill="#D4831F"/>
+    
+    <!-- Chart/Graph Lines -->
+    <g stroke="white" stroke-width="2" fill="none" opacity="0.8">
+      <polyline points="8,65 16,58 24,62 32,55 40,60"/>
+      <polyline points="8,75 16,70 24,68 32,65 40,70"/>
+    </g>
+    
+    <!-- Location Pin -->
+    <g transform="translate(50, 60)">
+      <path d="M8 0 C12.4 0 16 3.6 16 8 C16 14 8 20 8 20 S0 14 0 8 C0 3.6 3.6 0 8 0 Z" fill="#E74C3C"/>
+      <circle cx="8" cy="8" r="3" fill="white"/>
+    </g>
+  </g>
+  
+  <!-- Enterprise Badge -->
+  <g transform="translate(85, 10)">
+    <circle cx="15" cy="15" r="13" fill="url(#grad2)" stroke="#D4831F" stroke-width="1"/>
+    <text x="15" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">E</text>
+  </g>
+</svg>
