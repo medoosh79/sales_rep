@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Incentive Program Views -->
+    <record id="view_incentive_program_tree" model="ir.ui.view">
+        <field name="name">incentive.program.tree</field>
+        <field name="model">incentive.program</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list string="Incentive Programs" decoration-info="state=='active'" decoration-success="state=='completed'" decoration-muted="state=='cancelled'">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="program_type"/>
+                <field name="period_type"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="participant_count"/>
+                <field name="total_rewards_paid" widget="monetary" options="{'currency_field': 'reward_currency_id'}"/>
+                <field name="achievement_rate" widget="percentage"/>
+                <field name="state" widget="badge" decoration-info="state=='active'" decoration-success="state=='completed'"/>
+                <field name="reward_currency_id" invisible="1"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_incentive_program_form" model="ir.ui.view">
+        <field name="name">incentive.program.form</field>
+        <field name="model">incentive.program</field>
+        <field name="arch" type="xml">
+            <form string="Incentive Program">
+                <header>
+                    <button name="action_activate" string="Activate" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_pause" string="Pause" type="object" invisible="state != 'active'"/>
+                    <button name="action_complete" string="Complete" type="object" class="oe_highlight" invisible="state not in ['active', 'paused']"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ['completed', 'cancelled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                        <button name="action_view_participants" class="oe_stat_button" type="object" icon="fa-users">
+                            <field name="participant_count" widget="statinfo" string="Participants"/>
+                        </button>
+                        <button name="action_view_total_rewards" class="oe_stat_button" type="object" icon="fa-money">
+                            <field name="total_rewards_paid" widget="statinfo" string="Total Rewards"/>
+                        </button>
+                        <button name="action_view_achievement_rate" class="oe_stat_button" type="object" icon="fa-percent">
+                            <field name="achievement_rate" widget="statinfo" string="Achievement Rate"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Program Name..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Program Information">
+                            <field name="code"/>
+                            <field name="program_type"/>
+                            <field name="calculation_method"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group string="Period Configuration">
+                            <field name="period_type"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                    <group string="Target Configuration">
+                        <group>
+                            <field name="target_amount" invisible="program_type not in ['sales_target', 'customer_retention']"/>
+                            <field name="target_quantity" invisible="program_type not in ['customer_acquisition', 'training_completion']"/>
+                            <field name="target_percentage" invisible="program_type not in ['performance_rating', 'training_completion']"/>
+                        </group>
+                    </group>
+                    <group string="Reward Configuration">
+                        <group>
+                            <field name="reward_type"/>
+                            <field name="base_reward_amount" invisible="reward_type != 'monetary'"/>
+                            <field name="max_reward_amount" invisible="reward_type != 'monetary'"/>
+                            <field name="reward_currency_id" invisible="reward_type != 'monetary'"/>
+                        </group>
+                    </group>
+                    <group string="Eligibility Criteria">
+                        <group>
+                            <field name="eligible_sales_rep_ids" widget="many2many_tags"/>
+                            <field name="eligible_territory_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="min_employment_months"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Program description and rules..."/>
+                        </page>
+                        <page string="Reward Tiers" name="tiers" invisible="calculation_method != 'tiered'">
+                            <field name="reward_tier_ids"/>
+                        </page>
+                        <page string="Achievements" name="achievements">
+                            <field name="achievement_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_incentive_program_kanban" model="ir.ui.view">
+        <field name="name">incentive.program.kanban</field>
+        <field name="model">incentive.program</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="program_type"/>
+                <field name="period_type"/>
+                <field name="participant_count"/>
+                <field name="total_rewards_paid"/>
+                <field name="achievement_rate"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                        <br/>
+                                        <small><field name="code"/></small>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <field name="program_type"/><br/>
+                                    <span class="badge badge-pill badge-info">
+                                        <field name="period_type"/>
+                                    </span>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <span><field name="participant_count"/> participants</span><br/>
+                                            <span>$<field name="total_rewards_paid"/> rewards</span>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <field name="achievement_rate" widget="progressbar" title="Achievement Rate"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Sales Rep Achievement Views -->
+    <record id="view_sales_rep_achievement_tree" model="ir.ui.view">
+        <field name="name">sales.rep.achievement.tree</field>
+        <field name="model">sales.rep.achievement</field>
+        <field name="arch" type="xml">
+            <list string="Sales Rep Achievements" decoration-success="is_achieved==True" decoration-danger="is_achieved==False">
+                <field name="name"/>
+                <field name="sales_rep_id"/>
+                <field name="program_id"/>
+                <field name="period_start"/>
+                <field name="period_end"/>
+                <field name="target_amount" widget="monetary"/>
+                <field name="actual_amount" widget="monetary"/>
+                <field name="achievement_percentage" widget="percentage"/>
+                <field name="is_achieved" widget="boolean_toggle"/>
+                <field name="reward_amount" widget="monetary"/>
+                <field name="state" widget="badge" decoration-success="state=='achieved'" decoration-info="state=='in_progress'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_sales_rep_achievement_form" model="ir.ui.view">
+        <field name="name">sales.rep.achievement.form</field>
+        <field name="model">sales.rep.achievement</field>
+        <field name="arch" type="xml">
+            <form string="Sales Rep Achievement">
+                <header>
+                    <button name="action_mark_rewarded" string="Mark as Rewarded" type="object" class="oe_highlight" invisible="state != 'achieved'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,achieved,rewarded"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Achievement Information">
+                            <field name="sales_rep_id" readonly="1"/>
+                            <field name="program_id" readonly="1"/>
+                            <field name="period_start"/>
+                            <field name="period_end"/>
+                        </group>
+                        <group string="Achievement Status">
+                            <field name="achievement_date"/>
+                            <field name="reward_date"/>
+                            <field name="is_achieved" widget="boolean_toggle" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Targets vs Actual">
+                        <group string="Targets">
+                            <field name="target_amount" widget="monetary"/>
+                            <field name="target_quantity"/>
+                            <field name="target_percentage" widget="percentage"/>
+                        </group>
+                        <group string="Actual Performance">
+                            <field name="actual_amount" widget="monetary" readonly="1"/>
+                            <field name="actual_quantity" readonly="1"/>
+                            <field name="actual_percentage" widget="percentage" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Achievement">
+                            <field name="achievement_percentage" widget="percentage" readonly="1"/>
+                        </group>
+                        <group string="Rewards">
+                            <field name="reward_amount" widget="monetary"/>
+                            <field name="reward_points"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="reward_description" placeholder="Reward description..."/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Sales Rep Reward Views -->
+    <record id="view_sales_rep_reward_tree" model="ir.ui.view">
+        <field name="name">sales.rep.reward.tree</field>
+        <field name="model">sales.rep.reward</field>
+        <field name="arch" type="xml">
+            <list string="Sales Rep Rewards" decoration-info="state=='approved'" decoration-success="state=='paid'">
+                <field name="name"/>
+                <field name="sales_rep_id"/>
+                <field name="program_id"/>
+                <field name="reward_type"/>
+                <field name="reward_amount" widget="monetary"/>
+                <field name="reward_points"/>
+                <field name="reward_date"/>
+                <field name="payment_date"/>
+                <field name="state" widget="badge" decoration-info="state=='approved'" decoration-success="state=='paid'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_sales_rep_reward_form" model="ir.ui.view">
+        <field name="name">sales.rep.reward.form</field>
+        <field name="model">sales.rep.reward</field>
+        <field name="arch" type="xml">
+            <form string="Sales Rep Reward">
+                <header>
+                    <button name="action_approve" string="Approve" type="object" class="oe_highlight" invisible="state != 'pending'"/>
+                    <button name="action_pay" string="Mark as Paid" type="object" class="oe_highlight" invisible="state != 'approved'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ['paid', 'cancelled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,approved,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Reward Information">
+                            <field name="sales_rep_id" readonly="1"/>
+                            <field name="achievement_id" readonly="1"/>
+                            <field name="program_id" readonly="1"/>
+                            <field name="reward_type"/>
+                        </group>
+                        <group string="Reward Details">
+                            <field name="reward_amount" widget="monetary" invisible="reward_type != 'monetary'"/>
+                            <field name="reward_points" invisible="reward_type != 'points'"/>
+                            <field name="reward_date"/>
+                            <field name="expiry_date"/>
+                        </group>
+                    </group>
+                    <group string="Payment Information" invisible="reward_type != 'monetary'">
+                        <group>
+                            <field name="payment_method"/>
+                            <field name="payment_date"/>
+                            <field name="payment_reference"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="reward_description" placeholder="Reward description..."/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Incentive Analytics Views -->
+    <record id="view_incentive_analytics_tree" model="ir.ui.view">
+        <field name="name">incentive.analytics.tree</field>
+        <field name="model">incentive.analytics</field>
+        <field name="arch" type="xml">
+            <list string="Incentive Analytics" create="false" edit="false" delete="false">
+                <field name="date"/>
+                <field name="sales_rep_id"/>
+                <field name="program_id"/>
+                <field name="territory_id"/>
+                <field name="achievement_count" sum="Total Achievements"/>
+                <field name="reward_count" sum="Total Rewards"/>
+                <field name="total_reward_amount" sum="Total Amount" widget="monetary"/>
+                <field name="total_reward_points" sum="Total Points"/>
+                <field name="average_achievement_rate" avg="Avg Achievement Rate" widget="percentage"/>
+                <field name="target_amount" avg="Avg Target" widget="monetary"/>
+                <field name="actual_amount" avg="Avg Actual" widget="monetary"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search Views -->
+    <record id="view_incentive_program_search" model="ir.ui.view">
+        <field name="name">incentive.program.search</field>
+        <field name="model">incentive.program</field>
+        <field name="arch" type="xml">
+            <search string="Search Incentive Programs">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="program_type"/>
+                <separator/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="My Programs" name="my_programs" domain="[('eligible_sales_rep_ids.user_id', '=', uid)]"/>
+                <separator/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Active" name="state_active" domain="[('state', '=', 'active')]"/>
+                <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Program Type" name="group_type" context="{'group_by': 'program_type'}"/>
+                    <filter string="Period Type" name="group_period" context="{'group_by': 'period_type'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
+                    <filter string="Start Date" name="group_start_date" context="{'group_by': 'start_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_sales_rep_achievement_search" model="ir.ui.view">
+        <field name="name">sales.rep.achievement.search</field>
+        <field name="model">sales.rep.achievement</field>
+        <field name="arch" type="xml">
+            <search string="Search Achievements">
+                <field name="name"/>
+                <field name="sales_rep_id"/>
+                <field name="program_id"/>
+                <separator/>
+                <filter string="My Achievements" name="my_achievements" domain="[('sales_rep_id.user_id', '=', uid)]"/>
+                <filter string="Achieved" name="achieved" domain="[('is_achieved', '=', True)]"/>
+                <filter string="Not Achieved" name="not_achieved" domain="[('is_achieved', '=', False)]"/>
+                <separator/>
+                <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Achieved" name="state_achieved" domain="[('state', '=', 'achieved')]"/>
+                <filter string="Rewarded" name="rewarded" domain="[('state', '=', 'rewarded')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Sales Rep" name="group_sales_rep" context="{'group_by': 'sales_rep_id'}"/>
+                    <filter string="Program" name="group_program" context="{'group_by': 'program_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
+                    <filter string="Period Start" name="group_period" context="{'group_by': 'period_start'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_sales_rep_reward_search" model="ir.ui.view">
+        <field name="name">sales.rep.reward.search</field>
+        <field name="model">sales.rep.reward</field>
+        <field name="arch" type="xml">
+            <search string="Search Rewards">
+                <field name="name"/>
+                <field name="sales_rep_id"/>
+                <field name="program_id"/>
+                <separator/>
+                <filter string="My Rewards" name="my_rewards" domain="[('sales_rep_id.user_id', '=', uid)]"/>
+                <filter string="Monetary" name="monetary" domain="[('reward_type', '=', 'monetary')]"/>
+                <filter string="Points" name="points" domain="[('reward_type', '=', 'points')]"/>
+                <separator/>
+                <filter string="Pending" name="pending" domain="[('state', '=', 'pending')]"/>
+                <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Paid" name="paid" domain="[('state', '=', 'paid')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Sales Rep" name="group_sales_rep" context="{'group_by': 'sales_rep_id'}"/>
+                    <filter string="Program" name="group_program" context="{'group_by': 'program_id'}"/>
+                    <filter string="Reward Type" name="group_type" context="{'group_by': 'reward_type'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
+                    <filter string="Reward Date" name="group_date" context="{'group_by': 'reward_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_incentive_program" model="ir.actions.act_window">
+        <field name="name">Incentive Programs</field>
+        <field name="res_model">incentive.program</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first incentive program!
+            </p>
+            <p>
+                Design motivating incentive programs to boost sales performance and reward achievements.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_sales_rep_achievement" model="ir.actions.act_window">
+        <field name="name">Sales Rep Achievements</field>
+        <field name="res_model">sales.rep.achievement</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_my_achievements': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No achievements found!
+            </p>
+            <p>
+                Track sales representative achievements and progress towards incentive goals.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_sales_rep_reward" model="ir.actions.act_window">
+        <field name="name">Sales Rep Rewards</field>
+        <field name="res_model">sales.rep.reward</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_my_rewards': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No rewards found!
+            </p>
+            <p>
+                Manage and track rewards earned by sales representatives through incentive programs.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_incentive_analytics" model="ir.actions.act_window">
+        <field name="name">Incentive Analytics</field>
+        <field name="res_model">incentive.analytics</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No incentive data available!
+            </p>
+            <p>
+                Analytics show incentive program performance and reward distribution trends.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_incentives_rewards" name="Incentives &amp; Rewards" parent="menu_sales_rep_mgmt_pro" sequence="90"/>
+    
+    <!-- Incentive Reward Tier Views -->
+    <record id="view_incentive_reward_tier_tree" model="ir.ui.view">
+        <field name="name">incentive.reward.tier.tree</field>
+        <field name="model">incentive.reward.tier</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="min_achievement"/>
+                <field name="max_achievement"/>
+                <field name="reward_amount"/>
+                <field name="reward_percentage"/>
+                <field name="bonus_points"/>
+                <field name="description"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_incentive_reward_tier_form" model="ir.ui.view">
+        <field name="name">incentive.reward.tier.form</field>
+        <field name="model">incentive.reward.tier</field>
+        <field name="arch" type="xml">
+            <form string="Reward Tier">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="min_achievement"/>
+                            <field name="max_achievement"/>
+                        </group>
+                        <group>
+                            <field name="reward_amount"/>
+                            <field name="reward_percentage"/>
+                            <field name="bonus_points"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Tier description..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_incentive_program" name="Incentive Programs" parent="menu_incentives_rewards" action="action_incentive_program" sequence="10"/>
+    <menuitem id="menu_sales_rep_achievement" name="Achievements" parent="menu_incentives_rewards" action="action_sales_rep_achievement" sequence="20"/>
+    <menuitem id="menu_sales_rep_reward" name="Rewards" parent="menu_incentives_rewards" action="action_sales_rep_reward" sequence="30"/>
+    <menuitem id="menu_incentive_analytics" name="Incentive Analytics" parent="menu_incentives_rewards" action="action_incentive_analytics" sequence="40"/>
+
+</odoo>

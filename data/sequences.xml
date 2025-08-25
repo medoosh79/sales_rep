@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Sales Representative Sequence -->
+        <record id="seq_sales_rep" model="ir.sequence">
+            <field name="name">Sales Representative</field>
+            <field name="code">sales.rep</field>
+            <field name="prefix">SR</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <!-- Sales Assignment Sequence -->
+        <record id="seq_sales_assignment" model="ir.sequence">
+            <field name="name">Sales Assignment</field>
+            <field name="code">sales.assignment</field>
+            <field name="prefix">SA</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <!-- Commission Sequence -->
+        <record id="seq_commission" model="ir.sequence">
+            <field name="name">Commission</field>
+            <field name="code">sales.commission</field>
+            <field name="prefix">COM</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <!-- Territory Assignment Sequence -->
+        <record id="seq_territory_assignment" model="ir.sequence">
+            <field name="name">Territory Assignment</field>
+            <field name="code">territory.assignment</field>
+            <field name="prefix">TA</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+    </data>
+</odoo>

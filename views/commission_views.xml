@@ -43,6 +43,7 @@
     <record id="view_commission_scheme_tree" model="ir.ui.view">
         <field name="name">commission.scheme.tree</field>
         <field name="model">commission.scheme</field>
+        <field name="type">list</field>
         <field name="arch" type="xml">
             <list>
                 <field name="code"/>

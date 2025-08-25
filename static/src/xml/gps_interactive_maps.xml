@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    
+    <!-- GPS Interactive Maps Main Template -->
+    <t t-name="sales_rep_mgmt_pro.GPSInteractiveMapsTemplate">
+        <div class="o_gps_interactive_maps">
+            <!-- Control Panel -->
+            <div class="o_gps_control_panel card mb-3">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fa fa-map-marker"/> نظام تتبع GPS التفاعلي
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- View Selection -->
+                        <div class="col-md-3">
+                            <label class="form-label">نوع العرض</label>
+                            <select class="form-select" t-model="state.currentView" t-on-change="onViewChange">
+                                <option value="tracking">نقاط التتبع</option>
+                                <option value="route">المسارات</option>
+                                <option value="heatmap">الخريطة الحرارية</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Sales Rep Filter -->
+                        <div class="col-md-3">
+                            <label class="form-label">المندوب</label>
+                            <select class="form-select" t-model="state.selectedSalesRep" t-on-change="onSalesRepChange">
+                                <option value="">جميع المندوبين</option>
+                                <!-- Options will be populated dynamically -->
+                            </select>
+                        </div>
+                        
+                        <!-- Date Range -->
+                        <div class="col-md-3">
+                            <label class="form-label">من تاريخ</label>
+                            <input type="date" class="form-control" t-model="state.dateRange.from" t-on-change="onDateRangeChange"/>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <label class="form-label">إلى تاريخ</label>
+                            <input type="date" class="form-control" t-model="state.dateRange.to" t-on-change="onDateRangeChange"/>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <!-- Map Filters -->
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" t-model="state.mapFilters.showValidOnly" t-on-change="onFilterChange"/>
+                                <label class="form-check-label">عرض المواقع الصحيحة فقط</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" t-model="state.mapFilters.showInTerritory" t-on-change="onFilterChange"/>
+                                <label class="form-check-label">عرض المواقع داخل المنطقة فقط</label>
+                            </div>
+                        </div>
+                        
+                        <!-- Real-time Toggle -->
+                        <div class="col-md-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" t-model="state.realTimeEnabled" t-on-change="toggleRealTime"/>
+                                <label class="form-check-label">التحديث المباشر</label>
+                            </div>
+                        </div>
+                        
+                        <!-- Export Button -->
+                        <div class="col-md-3">
+                            <button class="btn btn-outline-primary" t-on-click="exportMapData">
+                                <i class="fa fa-download"/> تصدير البيانات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Map Container -->
+            <div class="o_gps_map_wrapper card">
+                <div class="card-body p-0">
+                    <div id="gps_interactive_map" class="o_gps_map" style="height: 600px; width: 100%;"></div>
+                </div>
+            </div>
+            
+            <!-- Map Legend -->
+            <div class="o_gps_legend card mt-3" t-if="state.currentView === 'tracking'">
+                <div class="card-header">
+                    <h6 class="mb-0">مفتاح الخريطة</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="legend-item">
+                                <span class="legend-marker" style="background-color: green;"></span>
+                                <span>موقع صحيح</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="legend-item">
+                                <span class="legend-marker" style="background-color: red;"></span>
+                                <span>موقع غير صحيح</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="legend-item">
+                                <span class="legend-marker visit-start"></span>
+                                <span>بداية زيارة</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="legend-item">
+                                <span class="legend-marker visit-end"></span>
+                                <span>نهاية زيارة</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="legend-item">
+                                <span class="legend-marker emergency"></span>
+                                <span>طوارئ</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="legend-item">
+                                <span class="legend-marker manual"></span>
+                                <span>يدوي</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Statistics Panel -->
+            <div class="o_gps_statistics card mt-3" t-if="state.trackingData.length > 0">
+                <div class="card-header">
+                    <h6 class="mb-0">إحصائيات التتبع</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="stat-item">
+                                <div class="stat-value" t-esc="state.trackingData.length"></div>
+                                <div class="stat-label">إجمالي النقاط</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-item">
+                                <div class="stat-value" t-esc="state.trackingData.filter(p => p.is_valid).length"></div>
+                                <div class="stat-label">نقاط صحيحة</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-item">
+                                <div class="stat-value" t-esc="state.trackingData.filter(p => p.is_in_territory).length"></div>
+                                <div class="stat-label">داخل المنطقة</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-item">
+                                <div class="stat-value" t-esc="new Set(state.trackingData.map(p => p.sales_rep_id[0])).size"></div>
+                                <div class="stat-label">عدد المندوبين</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Loading Indicator -->
+            <div class="o_gps_loading text-center mt-3" t-if="!state.mapLoaded">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">جاري التحميل...</span>
+                </div>
+                <p class="mt-2">جاري تحميل الخريطة...</p>
+            </div>
+        </div>
+    </t>
+    
+    <!-- GPS Tracking Point Info Window Template -->
+    <t t-name="sales_rep_mgmt_pro.GPSTrackingInfoWindow">
+        <div class="gps-info-window">
+            <div class="info-header">
+                <h6 t-esc="point.sales_rep_id[1]"></h6>
+                <span class="badge" t-att-class="point.is_valid ? 'badge-success' : 'badge-danger'">
+                    <t t-if="point.is_valid">صحيح</t>
+                    <t t-else="">غير صحيح</t>
+                </span>
+            </div>
+            
+            <div class="info-body">
+                <div class="info-row">
+                    <strong>الوقت:</strong>
+                    <span t-esc="formatDateTime(point.timestamp)"></span>
+                </div>
+                
+                <div class="info-row">
+                    <strong>النوع:</strong>
+                    <span t-esc="getTrackingTypeLabel(point.tracking_type)"></span>
+                </div>
+                
+                <div class="info-row" t-if="point.address">
+                    <strong>العنوان:</strong>
+                    <span t-esc="point.address"></span>
+                </div>
+                
+                <div class="info-row" t-if="point.customer_id">
+                    <strong>العميل:</strong>
+                    <span t-esc="point.customer_id[1]"></span>
+                </div>
+                
+                <div class="info-row" t-if="point.speed">
+                    <strong>السرعة:</strong>
+                    <span t-esc="point.speed"/> كم/س
+                </div>
+                
+                <div class="info-row">
+                    <strong>الدقة:</strong>
+                    <span t-esc="point.accuracy || 'غير محدد'"/> متر
+                </div>
+                
+                <div class="info-row">
+                    <strong>في المنطقة:</strong>
+                    <span t-esc="point.is_in_territory ? 'نعم' : 'لا'"></span>
+                </div>
+            </div>
+            
+            <div class="info-actions mt-2">
+                <button class="btn btn-sm btn-primary" t-on-click="() => this.viewTrackingDetails(point.id)">
+                    <i class="fa fa-eye"/> عرض التفاصيل
+                </button>
+                <button class="btn btn-sm btn-secondary" t-on-click="() => this.centerMapOnPoint(point)">
+                    <i class="fa fa-crosshairs"/> توسيط الخريطة
+                </button>
+            </div>
+        </div>
+    </t>
+    
+    <!-- GPS Route Info Template -->
+    <t t-name="sales_rep_mgmt_pro.GPSRouteInfo">
+        <div class="gps-route-info">
+            <div class="route-header">
+                <h6 t-esc="route.name"></h6>
+                <span class="badge badge-info" t-esc="route.date"></span>
+            </div>
+            
+            <div class="route-stats">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="stat-item">
+                            <div class="stat-value" t-esc="route.total_distance.toFixed(2)"></div>
+                            <div class="stat-label">المسافة (كم)</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-item">
+                            <div class="stat-value" t-esc="route.total_duration.toFixed(1)"></div>
+                            <div class="stat-label">المدة (ساعة)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-2">
+                    <div class="col-6">
+                        <div class="stat-item">
+                            <div class="stat-value" t-esc="route.average_speed.toFixed(1)"></div>
+                            <div class="stat-label">السرعة المتوسطة</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-item">
+                            <div class="stat-value" t-esc="route.efficiency_score.toFixed(1)"></div>
+                            <div class="stat-label">نقاط الكفاءة</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="route-actions mt-2">
+                <button class="btn btn-sm btn-primary" t-on-click="() => this.viewRouteDetails(route.id)">
+                    <i class="fa fa-eye"/> عرض التفاصيل
+                </button>
+                <button class="btn btn-sm btn-success" t-on-click="() => this.exportRoute(route.id)">
+                    <i class="fa fa-download"/> تصدير
+                </button>
+            </div>
+        </div>
+    </t>
+    
+    <!-- GPS Map Controls Template -->
+    <t t-name="sales_rep_mgmt_pro.GPSMapControls">
+        <div class="gps-map-controls">
+            <div class="control-group">
+                <button class="btn btn-sm btn-outline-primary" t-on-click="zoomIn">
+                    <i class="fa fa-plus"/>
+                </button>
+                <button class="btn btn-sm btn-outline-primary" t-on-click="zoomOut">
+                    <i class="fa fa-minus"/>
+                </button>
+            </div>
+            
+            <div class="control-group">
+                <button class="btn btn-sm btn-outline-secondary" t-on-click="resetView">
+                    <i class="fa fa-home"/> العرض الافتراضي
+                </button>
+            </div>
+            
+            <div class="control-group">
+                <button class="btn btn-sm btn-outline-info" t-on-click="toggleFullscreen">
+                    <i class="fa fa-expand"/> ملء الشاشة
+                </button>
+            </div>
+            
+            <div class="control-group">
+                <select class="form-select form-select-sm" t-model="mapType" t-on-change="changeMapType">
+                    <option value="roadmap">خريطة الطرق</option>
+                    <option value="satellite">الأقمار الصناعية</option>
+                    <option value="hybrid">مختلط</option>
+                    <option value="terrain">التضاريس</option>
+                </select>
+            </div>
+        </div>
+    </t>
+    
+    <!-- GPS Tracking Filters Template -->
+    <t t-name="sales_rep_mgmt_pro.GPSTrackingFilters">
+        <div class="gps-tracking-filters">
+            <div class="filter-section">
+                <h6>فلترة أنواع التتبع</h6>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="all" t-model="filters.trackingTypes" checked="checked"/>
+                    <label class="form-check-label">جميع الأنواع</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="visit_start" t-model="filters.trackingTypes"/>
+                    <label class="form-check-label">بداية الزيارة</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="visit_end" t-model="filters.trackingTypes"/>
+                    <label class="form-check-label">نهاية الزيارة</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="route_tracking" t-model="filters.trackingTypes"/>
+                    <label class="form-check-label">تتبع المسار</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="emergency" t-model="filters.trackingTypes"/>
+                    <label class="form-check-label">طوارئ</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="manual" t-model="filters.trackingTypes"/>
+                    <label class="form-check-label">يدوي</label>
+                </div>
+            </div>
+            
+            <div class="filter-section mt-3">
+                <h6>فلترة السرعة</h6>
+                <div class="row">
+                    <div class="col-6">
+                        <label class="form-label">السرعة الدنيا</label>
+                        <input type="number" class="form-control" t-model="filters.minSpeed" placeholder="0"/>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">السرعة العليا</label>
+                        <input type="number" class="form-control" t-model="filters.maxSpeed" placeholder="200"/>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-section mt-3">
+                <h6>فلترة الدقة</h6>
+                <div class="row">
+                    <div class="col-12">
+                        <label class="form-label">الدقة القصوى (متر)</label>
+                        <input type="number" class="form-control" t-model="filters.maxAccuracy" placeholder="100"/>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-actions mt-3">
+                <button class="btn btn-primary" t-on-click="applyFilters">
+                    <i class="fa fa-filter"/> تطبيق الفلاتر
+                </button>
+                <button class="btn btn-secondary" t-on-click="resetFilters">
+                    <i class="fa fa-refresh"/> إعادة تعيين
+                </button>
+            </div>
+        </div>
+    </t>
+    
+</templates>

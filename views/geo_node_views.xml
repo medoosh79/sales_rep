@@ -61,6 +61,7 @@
     <record id="view_geo_node_tree" model="ir.ui.view">
         <field name="name">geo.node.tree</field>
         <field name="model">geo.node</field>
+        <field name="type">list</field>
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>

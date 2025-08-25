@@ -71,6 +71,7 @@
     <record id="view_territory_assignment_tree" model="ir.ui.view">
         <field name="name">territory.assignment.tree</field>
         <field name="model">territory.assignment</field>
+        <field name="type">list</field>
         <field name="arch" type="xml">
             <list>
                 <field name="sequence" widget="handle"/>

@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Lead Source Views -->
+    <record id="view_lead_source_tree" model="ir.ui.view">
+        <field name="name">lead.source.tree</field>
+        <field name="model">lead.source</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list string="Lead Sources">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="lead_count"/>
+                <field name="conversion_rate" widget="percentage"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_lead_source_form" model="ir.ui.view">
+        <field name="name">lead.source.form</field>
+        <field name="model">lead.source</field>
+        <field name="arch" type="xml">
+            <form string="Lead Source">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                        <button name="action_view_leads" class="oe_stat_button" type="object" icon="fa-users">
+                            <field name="lead_count" widget="statinfo" string="Leads"/>
+                        </button>
+                        <button name="action_view_conversion_rate" class="oe_stat_button" type="object" icon="fa-percent">
+                            <field name="conversion_rate" widget="statinfo" string="Conversion Rate"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="color" widget="color"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Source description..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Lead Stage Views -->
+    <record id="view_lead_stage_tree" model="ir.ui.view">
+        <field name="name">lead.stage.tree</field>
+        <field name="model">lead.stage</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list string="Lead Stages">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="is_won"/>
+                <field name="is_lost"/>
+                <field name="auto_assign_sales_rep"/>
+                <field name="send_email_notification"/>
+                <field name="lead_count"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_lead_stage_form" model="ir.ui.view">
+        <field name="name">lead.stage.form</field>
+        <field name="model">lead.stage</field>
+        <field name="arch" type="xml">
+            <form string="Lead Stage">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                        <button name="action_view_stage_leads" class="oe_stat_button" type="object" icon="fa-users">
+                            <field name="lead_count" widget="statinfo" string="Leads"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sequence"/>
+                            <field name="fold"/>
+                        </group>
+                        <group>
+                            <field name="is_won"/>
+                            <field name="is_lost"/>
+                        </group>
+                    </group>
+                    <group string="Automation">
+                        <group>
+                            <field name="auto_assign_sales_rep"/>
+                            <field name="send_email_notification"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Stage description..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Sales Lead Views -->
+    <record id="view_sales_lead_tree" model="ir.ui.view">
+        <field name="name">sales.lead.tree</field>
+        <field name="model">sales.lead</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list string="Sales Leads" decoration-info="priority=='3'" decoration-warning="priority=='2'" decoration-muted="stage_id and (stage_id.is_won or stage_id.is_lost)">
+                <field name="name"/>
+                <field name="contact_name"/>
+                <field name="company_name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="source_id"/>
+                <field name="sales_rep_id"/>
+                <field name="stage_id"/>
+                <field name="priority" widget="priority"/>
+                <field name="qualification_score" widget="progressbar"/>
+                <field name="expected_revenue" sum="Total Expected Revenue"/>
+                <field name="probability" widget="percentage"/>
+                <field name="date_created"/>
+                <field name="expected_closing"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_sales_lead_form" model="ir.ui.view">
+        <field name="name">sales.lead.form</field>
+        <field name="model">sales.lead</field>
+        <field name="arch" type="xml">
+            <form string="Sales Lead">
+                <header>
+                    <button name="action_qualify_lead" string="Qualify" type="object" class="oe_highlight" invisible="is_qualified == True or qualification_score &lt; 60"/>
+                    <button name="action_convert_to_customer" string="Convert to Customer" type="object" class="oe_highlight" invisible="partner_id != False"/>
+                    <button name="action_convert_to_opportunity" string="Convert to Opportunity" type="object" invisible="opportunity_id != False"/>
+                    <button name="action_mark_lost" string="Mark as Lost" type="object" invisible="stage_id.is_lost == True"/>
+                    <button name="action_schedule_activity" string="Schedule Activity" type="object" icon="fa-calendar"/>
+                    <field name="stage_id" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Lead Name..."/>
+                        </h1>
+                        <h3>
+                            <field name="contact_name" placeholder="Contact Name..."/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group string="Lead Information">
+                            <field name="source_id" options="{'no_create': True}"/>
+                            <field name="sales_rep_id" options="{'no_create': True}"/>
+                            <field name="territory_id" readonly="1"/>
+                            <field name="priority" widget="priority"/>
+                            <field name="date_created" readonly="1"/>
+                            <field name="date_assigned" readonly="1" invisible="date_assigned == False"/>
+                        </group>
+                        <group string="Qualification">
+                            <field name="qualification_score" widget="progressbar"/>
+                            <field name="is_qualified" readonly="1"/>
+                            <field name="expected_revenue"/>
+                            <field name="probability" widget="percentage"/>
+                            <field name="expected_closing"/>
+                            <field name="budget"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Contact Information" name="contact">
+                            <group>
+                                <group string="Contact Details">
+                                    <field name="email" widget="email"/>
+                                    <field name="phone" widget="phone"/>
+                                    <field name="mobile" widget="phone"/>
+                                    <field name="last_contact_date"/>
+                                    <field name="next_contact_date"/>
+                                    <field name="contact_count"/>
+                                </group>
+                                <group string="Company Details">
+                                    <field name="company_name"/>
+                                    <field name="website" widget="url"/>
+                                    <field name="industry_id" options="{'no_create': True}"/>
+                                </group>
+                            </group>
+                            <group string="Address">
+                                <group>
+                                    <field name="street" placeholder="Street..."/>
+                                    <field name="street2" placeholder="Street 2..."/>
+                                    <field name="city" placeholder="City..."/>
+                                </group>
+                                <group>
+                                    <field name="state_id" options="{'no_create': True}"/>
+                                    <field name="country_id" options="{'no_create': True}"/>
+                                    <field name="zip" placeholder="ZIP..."/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Description &amp; Notes" name="description">
+                            <group>
+                                <field name="description" placeholder="Lead description..."/>
+                                <field name="notes" placeholder="Internal notes..."/>
+                                <field name="tags" placeholder="Tags (comma separated)..."/>
+                            </group>
+                        </page>
+                        <page string="Conversion" name="conversion" invisible="partner_id == False and opportunity_id == False">
+                            <group>
+                                <group>
+                                    <field name="partner_id" readonly="1"/>
+                                    <field name="opportunity_id" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="date_converted" readonly="1"/>
+                                    <field name="date_lost" readonly="1" invisible="date_lost == False"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_sales_lead_kanban" model="ir.ui.view">
+        <field name="name">sales.lead.kanban</field>
+        <field name="model">sales.lead</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id" class="o_kanban_small_column" quick_create="false">
+                <field name="name"/>
+                <field name="contact_name"/>
+                <field name="company_name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="sales_rep_id"/>
+                <field name="source_id"/>
+                <field name="priority"/>
+                <field name="qualification_score"/>
+                <field name="expected_revenue"/>
+                <field name="probability"/>
+                <field name="stage_id"/>
+                <field name="activity_ids"/>
+                <field name="activity_state"/>
+                <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'>
+                    <field name="activity_ids"/>
+                    <field name="activity_state"/>
+                </progressbar>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                        <br/>
+                                        <small><field name="contact_name"/></small>
+                                        <t t-if="record.company_name.raw_value">
+                                            <br/><small><field name="company_name"/></small>
+                                        </t>
+                                    </div>
+                                    <div class="o_kanban_record_top_right">
+                                        <field name="priority" widget="priority"/>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <t t-if="record.sales_rep_id.raw_value">
+                                        <field name="sales_rep_id"/><br/>
+                                    </t>
+                                    <field name="source_id"/><br/>
+                                    <t t-if="record.expected_revenue.raw_value">
+                                        <strong><field name="expected_revenue" widget="monetary"/></strong><br/>
+                                    </t>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <field name="qualification_score" widget="progressbar" title="Qualification Score"/>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <field name="activity_ids" widget="kanban_activity"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_sales_lead_search" model="ir.ui.view">
+        <field name="name">sales.lead.search</field>
+        <field name="model">sales.lead</field>
+        <field name="arch" type="xml">
+            <search string="Search Leads">
+                <field name="name"/>
+                <field name="contact_name"/>
+                <field name="company_name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="sales_rep_id"/>
+                <field name="source_id"/>
+                <field name="stage_id"/>
+                <separator/>
+                <filter string="My Leads" name="my_leads" domain="[('sales_rep_id.user_id', '=', uid)]"/>
+                <filter string="Unassigned" name="unassigned" domain="[('sales_rep_id', '=', False)]"/>
+                <filter string="Qualified" name="qualified" domain="[('is_qualified', '=', True)]"/>
+                <filter string="High Priority" name="high_priority" domain="[('priority', 'in', ['2', '3'])]"/>
+                <separator/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Won" name="won" domain="[('stage_id.is_won', '=', True)]"/>
+                <filter string="Lost" name="lost" domain="[('stage_id.is_lost', '=', True)]"/>
+                <separator/>
+                <filter string="This Week" name="this_week" domain="[('date_created', '>=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <filter string="This Month" name="this_month" domain="[('date_created', '>=', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d')), ('date_created', '&lt;', (context_today() + relativedelta(months=1, day=1)).strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Sales Rep" name="group_sales_rep" context="{'group_by': 'sales_rep_id'}"/>
+                    <filter string="Source" name="group_source" context="{'group_by': 'source_id'}"/>
+                    <filter string="Stage" name="group_stage" context="{'group_by': 'stage_id'}"/>
+                    <filter string="Priority" name="group_priority" context="{'group_by': 'priority'}"/>
+                    <filter string="Creation Date" name="group_date" context="{'group_by': 'date_created'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Lead Qualification Criteria Views -->
+    <record id="view_lead_qualification_criteria_tree" model="ir.ui.view">
+        <field name="name">lead.qualification.criteria.tree</field>
+        <field name="model">lead.qualification.criteria</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list string="Qualification Criteria">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="criteria_type"/>
+                <field name="weight" widget="percentage"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_lead_qualification_criteria_form" model="ir.ui.view">
+        <field name="name">lead.qualification.criteria.form</field>
+        <field name="model">lead.qualification.criteria</field>
+        <field name="arch" type="xml">
+            <form string="Qualification Criteria">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="criteria_type"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="weight" widget="percentage"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description" placeholder="Criteria description..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Lead Analytics Views -->
+    <record id="view_lead_analytics_tree" model="ir.ui.view">
+        <field name="name">lead.analytics.tree</field>
+        <field name="model">lead.analytics</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list string="Lead Analytics" create="false" edit="false" delete="false">
+                <field name="date"/>
+                <field name="sales_rep_id"/>
+                <field name="source_id"/>
+                <field name="stage_id"/>
+                <field name="territory_id"/>
+                <field name="lead_count" sum="Total Leads"/>
+                <field name="qualified_count" sum="Total Qualified"/>
+                <field name="converted_count" sum="Total Converted"/>
+                <field name="lost_count" sum="Total Lost"/>
+                <field name="total_revenue" sum="Total Revenue"/>
+                <field name="avg_qualification_score" avg="Avg Score"/>
+                <field name="avg_days_to_convert" avg="Avg Days"/>
+                <field name="conversion_rate" widget="percentage" avg="Avg Conversion Rate"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_lead_analytics_search" model="ir.ui.view">
+        <field name="name">lead.analytics.search</field>
+        <field name="model">lead.analytics</field>
+        <field name="arch" type="xml">
+            <search string="Search Lead Analytics">
+                <field name="sales_rep_id"/>
+                <field name="source_id"/>
+                <field name="stage_id"/>
+                <field name="territory_id"/>
+                <separator/>
+                <filter string="This Month" name="this_month" domain="[('date', '>=', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d')), ('date', '&lt;', (context_today() + relativedelta(months=1, day=1)).strftime('%Y-%m-%d'))]"/>
+                <filter string="Last Month" name="last_month" domain="[('date', '>=', (context_today() - relativedelta(months=1, day=1)).strftime('%Y-%m-%d')), ('date', '&lt;', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Sales Rep" name="group_sales_rep" context="{'group_by': 'sales_rep_id'}"/>
+                    <filter string="Source" name="group_source" context="{'group_by': 'source_id'}"/>
+                    <filter string="Stage" name="group_stage" context="{'group_by': 'stage_id'}"/>
+                    <filter string="Territory" name="group_territory" context="{'group_by': 'territory_id'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_lead_source" model="ir.actions.act_window">
+        <field name="name">Lead Sources</field>
+        <field name="res_model">lead.source</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first lead source!
+            </p>
+            <p>
+                Lead sources help track where your leads are coming from and measure their effectiveness.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_lead_stage" model="ir.actions.act_window">
+        <field name="name">Lead Stages</field>
+        <field name="res_model">lead.stage</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first lead stage!
+            </p>
+            <p>
+                Lead stages define the progression of leads through your sales process.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_sales_lead" model="ir.actions.act_window">
+        <field name="name">Sales Leads</field>
+        <field name="res_model">sales.lead</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_my_leads': 1, 'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first lead!
+            </p>
+            <p>
+                Track and manage potential customers through your sales pipeline.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_lead_qualification_criteria" model="ir.actions.act_window">
+        <field name="name">Qualification Criteria</field>
+        <field name="res_model">lead.qualification.criteria</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first qualification criteria!
+            </p>
+            <p>
+                Define criteria to systematically qualify and score your leads.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_lead_analytics" model="ir.actions.act_window">
+        <field name="name">Lead Analytics</field>
+        <field name="res_model">lead.analytics</field>
+        <field name="view_mode">list</field>
+        <field name="context">{'search_default_this_month': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No lead data available!
+            </p>
+            <p>
+                Analytics show lead performance metrics and conversion trends.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_leads_management" name="Leads Management" parent="menu_sales_rep_mgmt_pro" sequence="70"/>
+    
+    <menuitem id="menu_sales_lead" name="Leads" parent="menu_leads_management" action="action_sales_lead" sequence="10"/>
+    <menuitem id="menu_lead_source" name="Lead Sources" parent="menu_leads_management" action="action_lead_source" sequence="20"/>
+    <menuitem id="menu_lead_stage" name="Lead Stages" parent="menu_leads_management" action="action_lead_stage" sequence="30"/>
+    <menuitem id="menu_lead_qualification_criteria" name="Qualification Criteria" parent="menu_leads_management" action="action_lead_qualification_criteria" sequence="40"/>
+    <menuitem id="menu_lead_analytics" name="Lead Analytics" parent="menu_leads_management" action="action_lead_analytics" sequence="50"/>
+
+</odoo>

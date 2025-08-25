@@ -13,3 +13,11 @@ from . import route_customer
 from . import daily_visit_schedule
 from . import daily_visit_report
 from . import daily_visit_schedule_wizard
+from . import sales_target
+from . import gps_tracking
+from . import field_inventory
+from . import advanced_reports
+from . import expense_management
+from . import leads_management
+from . import training_evaluation
+from . import incentives_rewards

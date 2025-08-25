@@ -1,0 +1,399 @@
+/* Enhanced Forms and Views CSS */
+/* Sales Rep Management PRO - Form Enhancements */
+@import url('./main_theme.css');
+
+/* Form Container Enhancements */
+.o_form_view .o_form_sheet {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    padding: var(--spacing-2xl);
+    margin: var(--spacing-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.o_form_view .o_form_sheet::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--sales-primary) 0%, var(--sales-secondary) 100%);
+}
+
+/* Enhanced Form Headers */
+.o_form_view .oe_title {
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--border-light);
+    position: relative;
+}
+
+.o_form_view .oe_title h1 {
+    color: var(--gray-800);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-sm);
+}
+
+.o_form_view .oe_title .o_field_char {
+    background: transparent;
+    border: none;
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-700);
+    padding: var(--spacing-sm) 0;
+}
+
+.o_form_view .oe_title .o_field_char:focus {
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    padding: var(--spacing-sm) var(--spacing-md);
+    outline: 2px solid var(--sales-primary);
+}
+
+/* Enhanced Form Groups */
+.o_form_view .o_group {
+    margin-bottom: var(--spacing-xl);
+}
+
+.o_form_view .o_group .o_group_col_6 {
+    padding: var(--spacing-md);
+}
+
+.o_form_view .o_form_label {
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-700);
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--spacing-xs);
+}
+
+/* Enhanced Input Fields */
+.o_form_view .o_field_widget input,
+.o_form_view .o_field_widget select,
+.o_form_view .o_field_widget textarea {
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-base);
+    transition: all 0.3s ease;
+    background: var(--bg-primary);
+}
+
+.o_form_view .o_field_widget input:focus,
+.o_form_view .o_field_widget select:focus,
+.o_form_view .o_field_widget textarea:focus {
+    border-color: var(--sales-primary);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    outline: none;
+}
+
+.o_form_view .o_field_widget input:hover,
+.o_form_view .o_field_widget select:hover,
+.o_form_view .o_field_widget textarea:hover {
+    border-color: var(--sales-primary);
+}
+
+/* Enhanced Buttons */
+.o_form_view .oe_button_box {
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-light);
+}
+
+.o_form_view .oe_stat_button {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius);
+    margin: var(--spacing-xs);
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.o_form_view .oe_stat_button:hover {
+    border-color: var(--sales-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.o_form_view .oe_stat_button .o_stat_info {
+    color: var(--gray-700);
+}
+
+.o_form_view .oe_stat_button .o_stat_value {
+    color: var(--sales-primary);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-lg);
+}
+
+/* Enhanced Notebooks/Tabs */
+.o_form_view .o_notebook {
+    margin-top: var(--spacing-xl);
+}
+
+.o_form_view .o_notebook .nav-tabs {
+    border-bottom: 2px solid var(--border-light);
+    margin-bottom: var(--spacing-lg);
+}
+
+.o_form_view .o_notebook .nav-tabs .nav-link {
+    border: none;
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-600);
+    background: var(--bg-secondary);
+    margin-right: var(--spacing-xs);
+    transition: all 0.3s ease;
+}
+
+.o_form_view .o_notebook .nav-tabs .nav-link:hover {
+    color: var(--sales-primary);
+    background: var(--bg-primary);
+}
+
+.o_form_view .o_notebook .nav-tabs .nav-link.active {
+    color: var(--sales-primary);
+    background: var(--bg-primary);
+    border-bottom: 3px solid var(--sales-primary);
+    font-weight: var(--font-weight-bold);
+}
+
+.o_form_view .o_notebook .tab-content {
+    background: var(--bg-primary);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) var(--radius-lg);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--border-light);
+    border-top: none;
+}
+
+/* Enhanced List Views within Forms */
+.o_form_view .o_field_one2many .o_list_view,
+.o_form_view .o_field_many2many .o_list_view {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+}
+
+.o_form_view .o_field_one2many .o_list_view thead,
+.o_form_view .o_field_many2many .o_list_view thead {
+    background: linear-gradient(135deg, var(--sales-primary) 0%, var(--sales-secondary) 100%);
+}
+
+.o_form_view .o_field_one2many .o_list_view thead th,
+.o_form_view .o_field_many2many .o_list_view thead th {
+    color: white;
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.05em;
+    border: none;
+    padding: var(--spacing-md);
+}
+
+.o_form_view .o_field_one2many .o_list_view tbody tr,
+.o_form_view .o_field_many2many .o_list_view tbody tr {
+    transition: all 0.3s ease;
+}
+
+.o_form_view .o_field_one2many .o_list_view tbody tr:hover,
+.o_form_view .o_field_many2many .o_list_view tbody tr:hover {
+    background: var(--bg-secondary);
+    transform: scale(1.01);
+}
+
+/* Enhanced Status Bars */
+.o_form_view .o_form_statusbar {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-light);
+    padding: var(--spacing-md) var(--spacing-xl);
+}
+
+.o_form_view .o_statusbar_status .o_arrow_button {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-light);
+    color: var(--gray-600);
+    font-weight: var(--font-weight-medium);
+    transition: all 0.3s ease;
+}
+
+.o_form_view .o_statusbar_status .o_arrow_button.btn-primary {
+    background: linear-gradient(135deg, var(--sales-primary) 0%, var(--sales-secondary) 100%);
+    border-color: var(--sales-primary);
+    color: white;
+    font-weight: var(--font-weight-semibold);
+}
+
+.o_form_view .o_statusbar_status .o_arrow_button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Enhanced Chatter */
+.o_form_view .o_FormRenderer_chatterContainer {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--border-light);
+}
+
+.o_form_view .o_ChatterTopbar {
+    background: var(--bg-primary);
+    border-radius: var(--radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--border-light);
+}
+
+/* Enhanced Many2one Fields */
+.o_form_view .o_field_many2one .o_input_dropdown {
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+}
+
+.o_form_view .o_field_many2one .o_input_dropdown:focus-within {
+    border-color: var(--sales-primary);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Enhanced Boolean Fields */
+.o_form_view .o_field_boolean input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--sales-primary);
+    border-radius: var(--radius-sm);
+}
+
+/* Enhanced Selection Fields */
+.o_form_view .o_field_selection select {
+    background-image: linear-gradient(45deg, transparent 50%, var(--sales-primary) 50%),
+                      linear-gradient(135deg, var(--sales-primary) 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(1em + 2px),
+                         calc(100% - 15px) calc(1em + 2px);
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+}
+
+/* Enhanced Date/Datetime Fields */
+.o_form_view .o_field_date input,
+.o_form_view .o_field_datetime input {
+    position: relative;
+}
+
+.o_form_view .o_field_date .o_datepicker_button,
+.o_form_view .o_field_datetime .o_datepicker_button {
+    color: var(--sales-primary);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+}
+
+.o_form_view .o_field_date .o_datepicker_button:hover,
+.o_form_view .o_field_datetime .o_datepicker_button:hover {
+    background: var(--sales-primary);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Enhanced Progress Bars */
+.o_form_view .o_field_progressbar .o_progressbar {
+    height: 12px;
+    background: var(--gray-200);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.o_form_view .o_field_progressbar .o_progressbar .o_progress {
+    background: linear-gradient(90deg, var(--sales-primary) 0%, var(--sales-secondary) 100%);
+    height: 100%;
+    border-radius: var(--radius);
+    transition: width 0.6s ease;
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+    .o_form_view .o_form_sheet {
+        margin: var(--spacing-sm);
+        padding: var(--spacing-lg);
+    }
+    
+    .o_form_view .oe_title h1 {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .o_form_view .o_group .o_group_col_6 {
+        padding: var(--spacing-sm);
+    }
+    
+    .o_form_view .oe_button_box {
+        padding: var(--spacing-md);
+    }
+    
+    .o_form_view .o_notebook .nav-tabs .nav-link {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--font-size-sm);
+    }
+}
+
+@media (max-width: 576px) {
+    .o_form_view .o_form_sheet::before {
+        height: 3px;
+    }
+    
+    .o_form_view .oe_title {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .o_form_view .o_notebook .tab-content {
+        padding: var(--spacing-lg);
+    }
+}
+
+/* Animation Enhancements */
+.o_form_view .o_form_sheet {
+    animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.o_form_view .o_field_widget {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Focus Enhancements */
+.o_form_view .o_field_widget:focus-within {
+    transform: scale(1.02);
+    transition: transform 0.2s ease;
+}
+
+/* Hover Effects */
+.o_form_view .o_group:hover {
+    background: rgba(102, 126, 234, 0.02);
+    border-radius: var(--radius);
+    transition: background 0.3s ease;
+}

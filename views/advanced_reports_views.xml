@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Advanced Report Wizard Form View -->
+    <record id="view_advanced_report_wizard_form" model="ir.ui.view">
+        <field name="name">advanced.report.wizard.form</field>
+        <field name="model">advanced.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Advanced Report Generator">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="report_type" widget="radio"/>
+                            <field name="export_format" widget="radio"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="sales_rep_ids" widget="many2many_tags"/>
+                            <field name="territory_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group string="Report Options">
+                        <group>
+                            <field name="include_charts"/>
+                            <field name="include_summary"/>
+                        </group>
+                        <group>
+                            <field name="group_by_territory"/>
+                            <field name="group_by_month"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="generate_report" string="Generate Report" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Advanced Report Wizard Action -->
+    <record id="action_advanced_report_wizard" model="ir.actions.act_window">
+        <field name="name">Advanced Report Generator</field>
+        <field name="res_model">advanced.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_advanced_report_wizard_form"/>
+    </record>
+
+    <!-- Sales Performance Report Action -->
+    <record id="action_sales_performance_report" model="ir.actions.act_window">
+        <field name="name">Sales Performance Report</field>
+        <field name="res_model">advanced.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_advanced_report_wizard_form"/>
+        <field name="context">{'default_report_type': 'sales_performance'}</field>
+    </record>
+
+    <!-- Commission Summary Report Action -->
+    <record id="action_commission_summary_report" model="ir.actions.act_window">
+        <field name="name">Commission Summary Report</field>
+        <field name="res_model">advanced.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_advanced_report_wizard_form"/>
+        <field name="context">{'default_report_type': 'commission_summary'}</field>
+    </record>
+
+    <!-- Territory Analysis Report Action -->
+    <record id="action_territory_analysis_report" model="ir.actions.act_window">
+        <field name="name">Territory Analysis Report</field>
+        <field name="res_model">advanced.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_advanced_report_wizard_form"/>
+        <field name="context">{'default_report_type': 'territory_analysis'}</field>
+    </record>
+
+    <!-- GPS Tracking Report Action -->
+    <record id="action_gps_tracking_report" model="ir.actions.act_window">
+        <field name="name">GPS Tracking Report</field>
+        <field name="res_model">advanced.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_advanced_report_wizard_form"/>
+        <field name="context">{'default_report_type': 'gps_tracking'}</field>
+    </record>
+
+    <!-- Visit Summary Report Action -->
+    <record id="action_visit_summary_report" model="ir.actions.act_window">
+        <field name="name">Visit Summary Report</field>
+        <field name="res_model">advanced.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_advanced_report_wizard_form"/>
+        <field name="context">{'default_report_type': 'visit_summary'}</field>
+    </record>
+
+    <!-- KPI Dashboard Report Action -->
+    <record id="action_kpi_dashboard_report" model="ir.actions.act_window">
+        <field name="name">KPI Dashboard Report</field>
+        <field name="res_model">advanced.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_advanced_report_wizard_form"/>
+        <field name="context">{'default_report_type': 'kpi_dashboard'}</field>
+    </record>
+
+    <!-- Field Inventory Report Action -->
+    <record id="action_field_inventory_report" model="ir.actions.act_window">
+        <field name="name">Field Inventory Report</field>
+        <field name="res_model">advanced.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_advanced_report_wizard_form"/>
+        <field name="context">{'default_report_type': 'field_inventory'}</field>
+    </record>
+
+    <!-- Reports Menu -->
+    <menuitem id="menu_advanced_reports" name="Advanced Reports" parent="menu_sales_rep_mgmt_pro" sequence="60"/>
+    
+    <!-- Report Menu Items -->
+    <menuitem id="menu_advanced_report_generator" name="Report Generator" parent="menu_advanced_reports" action="action_advanced_report_wizard" sequence="10"/>
+    <menuitem id="menu_sales_performance_report" name="Sales Performance" parent="menu_advanced_reports" action="action_sales_performance_report" sequence="20"/>
+    <menuitem id="menu_commission_summary_report" name="Commission Summary" parent="menu_advanced_reports" action="action_commission_summary_report" sequence="30"/>
+    <menuitem id="menu_territory_analysis_report" name="Territory Analysis" parent="menu_advanced_reports" action="action_territory_analysis_report" sequence="40"/>
+    <menuitem id="menu_gps_tracking_report" name="GPS Tracking" parent="menu_advanced_reports" action="action_gps_tracking_report" sequence="50"/>
+    <menuitem id="menu_visit_summary_report" name="Visit Summary" parent="menu_advanced_reports" action="action_visit_summary_report" sequence="60"/>
+    <menuitem id="menu_kpi_dashboard_report" name="KPI Dashboard" parent="menu_advanced_reports" action="action_kpi_dashboard_report" sequence="70"/>
+    <menuitem id="menu_field_inventory_report" name="Field Inventory" parent="menu_advanced_reports" action="action_field_inventory_report" sequence="80"/>
+
+</odoo>

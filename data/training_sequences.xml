@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Training Course Sequence -->
+        <record id="seq_training_course" model="ir.sequence">
+            <field name="name">Training Course</field>
+            <field name="code">training.course</field>
+            <field name="prefix">TC</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        
+        <!-- Training Enrollment Sequence -->
+        <record id="seq_training_enrollment" model="ir.sequence">
+            <field name="name">Training Enrollment</field>
+            <field name="code">training.enrollment</field>
+            <field name="prefix">ENR</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        
+        <!-- Sales Rep Evaluation Sequence -->
+        <record id="seq_sales_rep_evaluation" model="ir.sequence">
+            <field name="name">Sales Rep Evaluation</field>
+            <field name="code">sales.rep.evaluation</field>
+            <field name="prefix">EVAL</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        
+        <!-- Sales Rep Certification Sequence -->
+        <record id="seq_sales_rep_certification" model="ir.sequence">
+            <field name="name">Sales Rep Certification</field>
+            <field name="code">sales.rep.certification</field>
+            <field name="prefix">CERT</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        
+    </data>
+</odoo>

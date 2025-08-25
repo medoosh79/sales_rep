@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Incentive Program Sequence -->
+        <record id="seq_incentive_program" model="ir.sequence">
+            <field name="name">Incentive Program</field>
+            <field name="code">incentive.program</field>
+            <field name="prefix">PROG</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <!-- Sales Rep Achievement Sequence -->
+        <record id="seq_sales_rep_achievement" model="ir.sequence">
+            <field name="name">Sales Rep Achievement</field>
+            <field name="code">sales.rep.achievement</field>
+            <field name="prefix">ACH</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <!-- Sales Rep Reward Sequence -->
+        <record id="seq_sales_rep_reward" model="ir.sequence">
+            <field name="name">Sales Rep Reward</field>
+            <field name="code">sales.rep.reward</field>
+            <field name="prefix">RWD</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+    </data>
+</odoo>

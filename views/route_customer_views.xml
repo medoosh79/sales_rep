@@ -5,6 +5,7 @@
     <record id="view_route_customer_tree" model="ir.ui.view">
         <field name="name">route.customer.tree</field>
         <field name="model">route.customer</field>
+        <field name="type">list</field>
         <field name="arch" type="xml">
             <list string="Route Customers">
                 <field name="sequence" widget="handle"/>

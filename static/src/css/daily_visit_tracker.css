@@ -1,8 +1,248 @@
+/* Daily Visit Tracker Styles - Enhanced with Main Theme */
+@import url('./main_theme.css');
+
 .daily-visit-tracker {
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 8px;
+    padding: var(--spacing-xl);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-xl);
+    margin: var(--spacing-md);
+    box-shadow: var(--shadow-lg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     min-height: 500px;
+}
+
+.tracker-header {
+    background: linear-gradient(135deg, var(--sales-primary) 0%, var(--sales-secondary) 100%);
+    color: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    margin: calc(-1 * var(--spacing-xl)) calc(-1 * var(--spacing-xl)) var(--spacing-xl) calc(-1 * var(--spacing-xl));
+    box-shadow: var(--shadow);
+}
+
+.tracker-header h3 {
+    margin: 0;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-2xl);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.tracker-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.stat-card {
+    background: var(--bg-primary);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-light);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--sales-primary) 0%, var(--sales-secondary) 100%);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+
+.stat-value {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    background: linear-gradient(135deg, var(--sales-primary) 0%, var(--sales-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--spacing-xs);
+}
+
+.stat-label {
+    font-size: var(--font-size-sm);
+    color: var(--gray-600);
+    text-transform: uppercase;
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.05em;
+}
+
+.visit-controls {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn-tracker {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-base);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-width: 140px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.btn-tracker::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-tracker:hover::before {
+    left: 100%;
+}
+
+.btn-start {
+    background: linear-gradient(135deg, var(--sales-success) 0%, #20c997 100%);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.btn-pause {
+    background: linear-gradient(135deg, var(--sales-warning) 0%, #fd7e14 100%);
+    color: var(--gray-800);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-pause:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.btn-complete {
+    background: linear-gradient(135deg, var(--sales-primary) 0%, var(--sales-secondary) 100%);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-complete:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.current-visit {
+    background: var(--bg-primary);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    border-left: 6px solid var(--sales-primary);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+}
+
+.current-visit::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--sales-primary) 0%, var(--sales-secondary) 100%);
+    border-radius: 0 var(--radius-lg) 0 var(--radius-2xl);
+    opacity: 0.1;
+}
+
+.visit-timer {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    background: linear-gradient(135deg, var(--sales-primary) 0%, var(--sales-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    padding: var(--spacing-lg);
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius);
+    margin-top: var(--spacing-md);
+    border: 2px solid var(--border-light);
+    font-family: 'Courier New', monospace;
+}
+
+.location-info {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+    padding: var(--spacing-md);
+    border-radius: var(--radius);
+    margin-top: var(--spacing-md);
+    font-size: var(--font-size-sm);
+    border: 1px solid var(--border-light);
+    color: var(--gray-700);
+}
+
+.progress-section {
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.progress-section h4 {
+    margin-bottom: var(--spacing-md);
+    color: var(--gray-700);
+    font-weight: var(--font-weight-semibold);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: var(--gray-200);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--sales-primary) 0%, var(--sales-secondary) 100%);
+    transition: width 0.6s ease;
+    border-radius: var(--radius);
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
 .daily-visit-tracker .card {

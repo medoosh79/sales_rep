@@ -1,8 +1,14 @@
-/* Visit Analytics Dashboard Styles */
+/* Visit Analytics Dashboard Styles - Enhanced with Main Theme */
+@import url('./main_theme.css');
+
 .visit-analytics-dashboard {
-    padding: 20px;
-    background-color: #f8f9fa;
+    padding: var(--spacing-xl);
+    background: var(--bg-secondary);
     min-height: 100vh;
+    border-radius: var(--radius-xl);
+    margin: var(--spacing-md);
+    box-shadow: var(--shadow-lg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Header Styles */

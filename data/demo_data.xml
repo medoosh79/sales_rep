@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Demo Product Lines -->
+        <record id="product_line_electronics" model="product.line">
+            <field name="name">Electronics</field>
+            <field name="code">ELEC</field>
+            <field name="sequence">10</field>
+            <field name="description">Electronic products including computers, phones, and accessories</field>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="product_line_furniture" model="product.line">
+            <field name="name">Furniture</field>
+            <field name="code">FURN</field>
+            <field name="sequence">20</field>
+            <field name="description">Office and home furniture products</field>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="product_line_clothing" model="product.line">
+            <field name="name">Clothing</field>
+            <field name="code">CLTH</field>
+            <field name="sequence">30</field>
+            <field name="description">Clothing and fashion accessories</field>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="product_line_books" model="product.line">
+            <field name="name">Books &amp; Media</field>
+            <field name="code">BOOK</field>
+            <field name="sequence">40</field>
+            <field name="description">Books, magazines, and digital media</field>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="product_line_sports" model="product.line">
+            <field name="name">Sports &amp; Recreation</field>
+            <field name="code">SPRT</field>
+            <field name="sequence">50</field>
+            <field name="description">Sports equipment and recreational products</field>
+            <field name="active">True</field>
+        </record>
+        
+    </data>
+</odoo>

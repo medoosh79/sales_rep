@@ -60,6 +60,7 @@
     <record id="view_sales_rep_tree" model="ir.ui.view">
         <field name="name">sales.rep.tree</field>
         <field name="model">sales.rep</field>
+        <field name="type">list</field>
         <field name="arch" type="xml">
             <list>
                 <field name="code"/>
@@ -115,6 +116,11 @@
     <menuitem id="menu_sales_rep_root" name="Sales Representatives" 
               web_icon="sales_rep_mgmt_pro,static/description/icon.svg" 
               sequence="80"/>
+    
+    <!-- Main Sales Rep Management Menu -->
+    <menuitem id="menu_sales_rep_mgmt_pro" name="Sales Rep Management" 
+              parent="menu_sales_rep_root" 
+              sequence="5"/>
     
     <menuitem id="menu_sales_rep" name="Sales Representatives" 
               parent="menu_sales_rep_root" 

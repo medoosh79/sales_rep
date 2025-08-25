@@ -6,6 +6,7 @@
         <record id="view_daily_visit_report_tree" model="ir.ui.view">
             <field name="name">daily.visit.report.tree</field>
             <field name="model">daily.visit.report</field>
+            <field name="type">list</field>
             <field name="arch" type="xml">
                 <list string="Daily Visit Reports" create="false" edit="false" delete="false">
                     <field name="date"/>

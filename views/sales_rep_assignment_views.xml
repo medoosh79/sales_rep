@@ -43,6 +43,7 @@
     <record id="view_sales_rep_assignment_tree" model="ir.ui.view">
         <field name="name">sales.rep.assignment.tree</field>
         <field name="model">sales.rep.assignment</field>
+        <field name="type">list</field>
         <field name="arch" type="xml">
             <list>
                 <field name="sales_rep_id"/>
